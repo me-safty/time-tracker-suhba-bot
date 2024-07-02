@@ -14,9 +14,11 @@
   "dependencies": {
     "@sanity/client": "^6.20.1",
     "express": "^4.19.2",
+    "moment-hijri": "^2.1.2",
     "node-telegram-bot-api": "^0.66.0"
   },
   "devDependencies": {
+    "@types/moment-hijri": "^2.1.4",
     "dotenv": "^16.4.5",
     "esbuild": "^0.23.0"
   }
