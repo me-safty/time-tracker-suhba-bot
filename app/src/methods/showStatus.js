@@ -34,8 +34,8 @@ export const showStatus = async (msg) => {
 
 const statusMessage = ({name, last_name, todayTime, allTime, rankName}) => {
 	return `<strong> الإحصائيات حول الأخ </strong>${name} ${last_name ?? ''}
-	${formatDate(new Date())} : ${arabicTodayName}
-<strong>${getHigriDate()} : ${arabicTodayName}
+${formatDate(new Date())} : ${arabicTodayName}<strong>
+${getHigriDate()} : ${arabicTodayName}
 
 الانجاز اليوم:</strong> ${getTimeByHours(todayTime)}
 
