@@ -7,12 +7,14 @@ export const showStatus = async (msg) => {
 	const chatId = msg.chat.id;
 	const {
 		first_name: name,
+		last_name,
 		id,
 	} = msg.from
 	try {
 		const user = await getById(id)
 		if (user) {
 			bot.sendMessage(chatId, statusMessage({
+				last_name,
 				name,
 				todayTime: user.todayTime,
         allTime: user.allTime,
@@ -30,19 +32,16 @@ export const showStatus = async (msg) => {
 	}
 }
 
-const statusMessage = ({name, todayTime, allTime, rankName}) => {
-	return `.
-<strong>
-الإحصائيات حول الأخ ${name}
+const statusMessage = ({name, last_name, todayTime, allTime, rankName}) => {
+	return `<strong> الإحصائيات حول الأخ </strong>${name, last_name ?? ''}
+	${formatDate(new Date())} : ${arabicTodayName}
+<strong>${getHigriDate()} : ${arabicTodayName}
 
-${getHigriDate()} : ${arabicTodayName}
+الانجاز اليوم:</strong> ${getTimeByHours(todayTime)}
 
-الانجاز اليوم: ${getTimeByHours(todayTime)}
+<strong>الإنجاز منذ دخولك المجموعة: </strong>${getTimeByHours(allTime)}
 
-الانجاز منذ دخولك المجموعة: ${getTimeByHours(allTime)}
-
-الرتبة: ${rankName}
-</strong>
+<strong>الرتبة: </strong>${rankName}
 
 .`	
 }

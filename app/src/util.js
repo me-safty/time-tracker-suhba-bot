@@ -18,9 +18,9 @@ export const getTimeByHours = (timeByMin) => {
 }
 
 export const getHigriDate = (date = new Date()) => {
-  const m = moment(date.toLocaleDateString(), 'DD/MM/YYYY');
-  m.locale("ar-SA")
-  return m.format('iD/iMMMM/iYYYY هـ الموافق YYYY/D/M م')
+  const m = moment(date);
+  m.locale("ar")
+  return m.format('iD - iMMMM - iYYYY هـ')
 }
 
 export const getArabicDayName = (dayOfWeek) => {
