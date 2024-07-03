@@ -25,7 +25,7 @@ export const addTime = async (msg, match) => {
 					rankName,
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
-				const randomMessage = Math.floor(Math.random() * 4) === 0 ? `جزاك الله خيرا يا ايها${rankName}` : ""
+				const randomMessage = Math.floor(Math.random() * 4) === 0 ? `جزاك الله خيرا يا ${user.name}` : ""
 				const addTimeMessage = `<strong>إنجازك اليوم: ${todayTime}د
 				
 				${hasNewRank
@@ -60,11 +60,11 @@ export const addTime = async (msg, match) => {
 }
 
 export const userNotRegisterMessage = `.
-<strong>
+
 المستغدم غير مسجل (:
 
 للتسجيل اكتب /تسجيل_بالبوت ثم حاول مجددا
-</strong>
+
 .`
 
 const newRankMessage = (rankName) => `مبارك تمت ترقيتك الي (${rankName}) 🎉`
