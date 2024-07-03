@@ -25,13 +25,14 @@ export const addTime = async (msg, match) => {
 					rankName,
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
-				const addTimeMessage = `إنجازك اليوم: ${todayTime}د
+				const randomMessage = Math.floor(Math.random() * 4) === 0 ? `جزاك الله خيرا يا ايها${rankName}` : ""
+				const addTimeMessage = `<strong>إنجازك اليوم: ${todayTime}د
 				
 				${hasNewRank
 					? newRankMessage(rankName)
 					: ''}
 
-				${randomMessage}
+				${randomMessage}</strong>
 				`
 				await client.createOrReplace({
 					...user,
@@ -40,10 +41,14 @@ export const addTime = async (msg, match) => {
 					lastTimeEntryDate: formatDate(new Date()),
 					todayTime,
 				})
-				bot.sendMessage(chatId, addTimeMessage)
+				bot.sendMessage(chatId, addTimeMessage, {
+					parse_mode: "HTML"
+				})
 			}
 			else {
-				bot.sendMessage(chatId, userNotRegisterMessage);
+				bot.sendMessage(chatId, userNotRegisterMessage, {
+					parse_mode: "HTML"
+				});
 			}
 		} catch (error) {
 			console.error('Sanity write error:', error);
@@ -55,13 +60,11 @@ export const addTime = async (msg, match) => {
 }
 
 export const userNotRegisterMessage = `.
-
+<strong>
 المستغدم غير مسجل (:
 
 للتسجيل اكتب /تسجيل_بالبوت ثم حاول مجددا
-
+</strong>
 .`
 
 const newRankMessage = (rankName) => `مبارك تمت ترقيتك الي (${rankName}) 🎉`
-
-const randomMessage = Math.floor(Math.random() * 4) === 0 ? "جزاك الله خيرا" : ""

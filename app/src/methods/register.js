@@ -11,14 +11,18 @@ export const register = async (msg) => {
 	try {
 		const user = await getById(id)
 		if (user) {
-			bot.sendMessage(chatId, youRegisterMessage);
+			bot.sendMessage(chatId, youRegisterMessage, {
+				parse_mode: "HTML"
+			});
 		}
 		else {
 			await createUser({
 				id,
 				name
 			})
-			bot.sendMessage(chatId, registerMessage)
+			bot.sendMessage(chatId, registerMessage, {
+				parse_mode: "HTML"
+			})
 		}
 	} catch (error) {
 		console.error('Sanity write error:', error);
@@ -27,13 +31,13 @@ export const register = async (msg) => {
 }
 
 const registerMessage = `.
-
+<strong>
 قد تم تسجيلك ، أهلا وسهلا بك 
-
+</strong>
 .`
 
 const youRegisterMessage = `.
-
+<strong>
 عذراً ؛ انت مُسجل بالبوت فعلاً 😅
-
+</strong>
 .`
