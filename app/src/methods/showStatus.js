@@ -1,6 +1,6 @@
 import bot from "../bot";
 import { getById } from "../db/getById";
-import { arabicTodayName, formatDate, getHigriDate, getTimeByHours, ranks } from "../util";
+import { arabicTodayName, formatDate, getHigriDate, getTimeByHours, hamzaId, ranks } from "../util";
 import { userNotRegisterMessage } from "./addTime";
 
 export const showStatus = async (msg) => {
@@ -14,6 +14,7 @@ export const showStatus = async (msg) => {
 		const user = await getById(id)
 		if (user) {
 			bot.sendMessage(chatId, statusMessage({
+				id,
 				last_name,
 				name,
 				todayTime: user.todayTime,
@@ -32,16 +33,20 @@ export const showStatus = async (msg) => {
 	}
 }
 
-const statusMessage = ({name, last_name, todayTime, allTime, rankName}) => {
-	return `<strong> الإحصائيات حول الأخ </strong>${name} ${last_name ?? ''}
-${formatDate(new Date())} : ${arabicTodayName}<strong>
-${getHigriDate()} : ${arabicTodayName}
+const statusMessage = ({id, name, last_name, todayTime, allTime, rankName}) => {
+	return `<b>الإحصائيات حول الأخ </b>${name} ${last_name ?? ''}
+<b>${formatDate(new Date())} : ${arabicTodayName}</b>
+<b>${getHigriDate()} : ${arabicTodayName}</b>
 
-الانجاز اليوم:</strong> ${getTimeByHours(todayTime)}
+<b>الانجاز اليوم:</b> ${getTimeByHours(todayTime)}
 
 <strong>الإنجاز منذ دخولك المجموعة: </strong>${getTimeByHours(allTime)}
 
-<strong>الرتبة: </strong>${rankName}
+<strong>الرتبة: </strong>${
+	id === hamzaId
+		? "امير المؤمنين"
+		: rankName
+	}
 
-.`	
+.`
 }

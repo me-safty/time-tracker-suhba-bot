@@ -1,4 +1,11 @@
 import moment from "moment-hijri"
+
+String.prototype.toArabicDigits= function(){
+  const id = ['۰','۱','۲','٣','٤','٥','٦','۷','۸','۹'];
+  return this.replace(/[0-9]/g, function(w) {
+    return id[+w]
+  });
+}
 export const formatDate = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -20,7 +27,7 @@ export const getTimeByHours = (timeByMin) => {
 export const getHigriDate = (date = new Date()) => {
   const m = moment(date);
   m.locale("ar")
-  return m.format('iD - iMMMM - iYYYY هـ')
+  return m.format('iD - iMMMM - iYYYY هـ').toArabicDigits()
 }
 
 export const getArabicDayName = (dayOfWeek) => {
@@ -94,3 +101,6 @@ export const commands = {
   showAllUsers: /#عرض_جميع_الإحصائيات/,
   sendMessage: /#ارسل (.*)/
 }
+
+export const mohamedSaftyId = 1273850613
+export const hamzaId = 6187883815

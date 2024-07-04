@@ -6,5 +6,7 @@ export const showCommands = async (msg) => {
 	const commands = Object.values(botCommands).reduce((acc, command) => {
 		return acc + command + "\n\n"
 	}, '')
-	bot.sendMessage(chatId, "<strong>" + commands + "</strong>\n.")	
+	bot.sendMessage(chatId, "<strong>" + commands + "</strong>\n.", {
+		parse_mode: "HTML"
+	})	
 }

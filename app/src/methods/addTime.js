@@ -1,7 +1,7 @@
 import bot from "../bot";
 import { getById } from "../db/getById";
 import { client } from "../sanityClient";
-import { formatDate, getRank, isSameDay } from "../util";
+import { formatDate, getRank, isSameDay, mohamedSaftyId } from "../util";
 
 export const addTime = async (msg, match) => {
 	const chatId = msg.chat.id;
@@ -25,7 +25,9 @@ export const addTime = async (msg, match) => {
 					rankName,
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
-				const randomMessage = Math.floor(Math.random() * 4) === 0 ? `جزاك الله خيرا يا ${user.name}` : ""
+				const randomMessage = Math.floor(Math.random() * 40) === 4 || id === mohamedSaftyId
+					? `جزاك الله خيرا يا ${user.name} (${rankName})`
+					: ""
 				const addTimeMessage = `<strong>إنجازك اليوم: ${todayTime}د
 				
 				${hasNewRank
