@@ -61,7 +61,7 @@ export const addTime = async (msg, match) => {
 			sendErrorMessage(chatId);	
 		}
 	} else {
-		bot.sendMessage(chatId, 'طريقه الاستغدام اكتب /إضافة_جلسة ثم عدد الدقائق');
+		bot.sendMessage(chatId, 'طريقه الاستغدام اكتب #إضافة_جلسة ثم عدد الدقائق');
 	}
 }
 
@@ -69,7 +69,7 @@ export const userNotRegisterMessage = `.
 
 المستغدم غير مسجل (:
 
-للتسجيل اكتب /تسجيل_بالبوت ثم حاول مجددا
+للتسجيل اكتب #تسجيل_بالبوت ثم حاول مجددا
 
 .`
 
