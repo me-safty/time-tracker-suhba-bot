@@ -1,12 +1,13 @@
-import bot from "../bot";
-import { botCommands, commands } from "../util";
+import { botCommands } from "../consts";
+import { sendTeleMessage } from "../util";
 
 export const showCommands = async (msg) => {
 	const chatId = msg.chat.id;
 	const commands = Object.values(botCommands).reduce((acc, command) => {
 		return acc + command + "\n\n"
 	}, '')
-	bot.sendMessage(chatId, "<strong>" + commands + "</strong>\n.", {
-		parse_mode: "HTML"
-	})	
+	sendTeleMessage({
+		chatId,
+		value: commands
+	})
 }

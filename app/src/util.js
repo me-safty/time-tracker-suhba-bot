@@ -1,4 +1,7 @@
 import moment from "moment-hijri"
+import { arabicDays, ranks } from "./consts";
+import { errorMessage } from "./messages";
+import bot from "./bot";
 
 String.prototype.toArabicDigits= function(){
   const id = ['۰','۱','۲','٣','٤','٥','٦','۷','۸','۹'];
@@ -30,21 +33,7 @@ export const getHigriDate = (date = new Date()) => {
   return m.format('iD - iMMMM - iYYYY هـ').toArabicDigits()
 }
 
-export const getArabicDayName = (dayOfWeek) => {
-  const arabicDays = [
-    "الأحد",
-    "الاثنين",
-    "الثلاثاء",
-    "الأربعاء",
-    "الخميس",
-    "الجمعة",
-    "السبت"
-  ];
-
-  return arabicDays[dayOfWeek];
-}
-
-export const arabicTodayName = getArabicDayName(new Date().getDay());
+export const getArabicDayName = (dayOfWeek) => arabicDays[dayOfWeek]
 
 export const getRank = (allTime) => {
   const hours = Math.floor(allTime / 60)
@@ -70,37 +59,66 @@ export const getRank = (allTime) => {
   }
 }
 
-export const ranks = {
-  0: "مواطن",
-  50: "جندي شجاع",
-  100: "رقيب",
-  150: "ملازم اول",
-  200: "نقيب ⭐",
-  250: "رائد",
-  300: "مقدم",
-  350: "عقيد",
-  400: "عميد",
-  450: "لواء",
-  500: "فريق",
-  550: "مُشير 🔱"
+export const isAdmin = async (chatId, userId) => {
+  try {
+    const chatAdmins = await bot.getChatAdministrators(chatId)
+    const isAdmin = chatAdmins.some(admin => admin.user.id === userId)
+    return isAdmin
+  } catch {
+    return false
+  }
 }
 
-export const botCommands = {
-  addTime: "#إضافة_جلسة (عدد الدقائق)",
-  register: "#تسجيل_بالبوت",
-  showStatus: "#عرض_إحصائياتي",
-  showCommands: "#عرض_الأوامر",
-  showAllUsers: "#عرض_جميع_الإحصائيات"
+export const sendTeleMessage = ({
+  chatId,
+  value,
+  messageId,
+  isBold = true,
+  options = {}
+}) => {
+  const messageOptions = {
+    ...options,
+    parse_mode: "HTML"
+  }
+  if (messageId) {
+    messageOptions.reply_to_message_id = messageId
+  }
+  const message = isBold
+    ? `<b>${value}</b>`
+    : value
+  bot.sendMessage(chatId, message, messageOptions);
 }
 
-export const commands = {
-  addTime: /#إضافة_جلسة (.+)/,
-  register: /#تسجيل_بالبوت/,
-  showStatus: /#عرض_إحصائياتي/,
-  showCommands: /#عرض_الأوامر/,
-  showAllUsers: /#عرض_جميع_الإحصائيات/,
-  sendMessage: /#ارسل (.*)/
+export const getMessageInfo = (msg) => {
+  const {
+		first_name,
+		last_name,
+		id,
+	} = msg.from
+  return {
+    chatId: msg.chat.id,
+    messageId: msg.message_id,
+    userId: id,
+    name: last_name
+      ? `${first_name} ${last_name}`
+      : first_name,
+    first_name,
+    last_name,
+  }
 }
 
-export const mohamedSaftyId = 1273850613
-export const hamzaId = 6187883815
+export const sendErrorMessage = (chatId) => {
+  sendTeleMessage({
+    chatId,
+    value: errorMessage
+  })
+}
+
+export const getTodayTime = (user, newValue) => {
+  return isSameDay(
+    new Date(user.lastTimeEntryDate),
+    new Date()
+  )
+    ? user.todayTime
+    : newValue ?? 0
+}

@@ -4,7 +4,7 @@ import { addTime } from "./methods/addTime";
 import { register } from "./methods/register";
 import { showStatus } from "./methods/showStatus";
 import { showCommands } from "./methods/showCommands";
-import { commands } from "./util";
+import { commands } from "./consts";
 import { showAllUsers } from "./methods/showAllUsers";
 import { sendMessage } from "./methods/sendMessage";
 require('events').EventEmitter.defaultMaxListeners = 20;
@@ -29,4 +29,4 @@ bot.onText(commands.showCommands, (msg) => showCommands(msg));
 bot.onText(commands.showAllUsers, (msg) => showAllUsers(msg));
 bot.onText(commands.sendMessage, (msg, match) => sendMessage(msg, match));
 
-module.exports = app;
+module.exports = app

@@ -1,35 +1,28 @@
 import bot from "../bot";
+import { arabicTodayName, hamzaId, ranks } from "../consts";
 import { getById } from "../db/getById";
+import { userNotRegisterMessage } from "./addTime";
 import {
-	arabicTodayName,
 	formatDate,
 	getHigriDate,
+	getMessageInfo,
 	getTimeByHours,
-	hamzaId,
-	isSameDay,
-	ranks
+	getTodayTime,
+	sendErrorMessage
 } from "../util";
-import { userNotRegisterMessage } from "./addTime";
 
 export const showStatus = async (msg) => {
-	const chatId = msg.chat.id;
 	const {
-		first_name: name,
-		last_name,
-		id,
-	} = msg.from
+		chatId,
+		name,
+		userId
+	} = getMessageInfo(msg)
 	try {
-		const user = await getById(id)
+		const user = await getById(userId)
 		if (user) {
-			const todayTime = isSameDay(
-				new Date(user.lastTimeEntryDate),
-				new Date()
-			)
-				? user.todayTime
-				: 0
+			const todayTime = getTodayTime(user)
 			bot.sendMessage(chatId, statusMessage({
-				id,
-				last_name,
+				userId,
 				name,
 				todayTime,
         allTime: user.allTime,
@@ -43,12 +36,12 @@ export const showStatus = async (msg) => {
 		}
 	} catch (error) {
 		console.error('Sanity write error:', error);
-		bot.sendMessage(chatId, 'شئ ما خاطئ من فضلك حاوب مجددا');
+		sendErrorMessage(chatId);
 	}
 }
 
-const statusMessage = ({id, name, last_name, todayTime, allTime, rankName}) => {
-	return `<b>الإحصائيات حول الأخ </b>${name} ${last_name ?? ''}
+const statusMessage = ({userId, name, todayTime, allTime, rankName}) => {
+	return `<b>الإحصائيات حول الأخ </b>${name}
 <b>${formatDate(new Date())} : ${arabicTodayName}</b>
 <b>${getHigriDate()} : ${arabicTodayName}</b>
 
@@ -57,7 +50,7 @@ const statusMessage = ({id, name, last_name, todayTime, allTime, rankName}) => {
 <strong>الإنجاز منذ دخولك المجموعة: </strong>${getTimeByHours(allTime)}
 
 <strong>الرتبة: </strong>${
-	id === hamzaId
+	userId === hamzaId
 		? "امير المؤمنين"
 		: rankName
 	}

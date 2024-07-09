@@ -1,38 +1,61 @@
-import bot from "../bot";
 import { getAllUsers } from "../db/getAllUsers";
-import { getTimeByHours } from "../util";
+import { notAdminMessage } from "../messages";
+import {
+	getMessageInfo,
+	getTimeByHours,
+	getTodayTime,
+	isAdmin,
+	sendErrorMessage,
+	sendTeleMessage
+} from "../util";
 
 export const showAllUsers = async (msg) => {
-	const chatId = msg.chat.id;
+	const {
+		chatId,
+		userId,
+		messageId
+	} = getMessageInfo(msg)
 	try {
+		const isUserAdmin = await isAdmin(chatId, userId)
+		if (!isUserAdmin) {
+			return sendTeleMessage({
+				chatId,
+				value: notAdminMessage,
+				messageId
+			})
+		}
+
 		const users = await getAllUsers()
 		if (users) {
 			const usersMessage = users.reduce((acc, user, index) => {
+				const todayTime = getTodayTime(user)
 				const message = userMessage({
 					index,
 					name: user.name,
 					allTime: user.allTime,
-					todayTime: user.todayTime,
+					todayTime
 				})
 				return acc + message
 			}, '')
-			bot.sendMessage(chatId, usersMessage, {
-				parse_mode: "HTML"
+			sendTeleMessage({
+				chatId,
+				value: usersMessage,
+				messageId
 			})
 		}
 		else {
-			bot.sendMessage(chatId, 'شئ ما خاطئ من فضلك حاوب مجددا')
+			sendErrorMessage(chatId)
 		}
 	} catch (error) {
 		console.error('Sanity write error:', error);
-		bot.sendMessage(chatId, 'شئ ما خاطئ من فضلك حاوب مجددا');
+		sendErrorMessage(chatId);
 	}
 }
 
 export const userMessage = ({index, name, todayTime, allTime}) => {
 	return `
-<strong>
+
 ${index + 1}- الأخ ${name}
 الانجاز اليوم: ${getTimeByHours(todayTime)}
-الانجاز منذ دخولك المجموعة: ${getTimeByHours(allTime)}</strong>`	
+الانجاز منذ دخولك المجموعة: ${getTimeByHours(allTime)}`	
 }

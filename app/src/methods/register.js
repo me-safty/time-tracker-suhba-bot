@@ -1,6 +1,7 @@
 import bot from "../bot";
 import { createUser } from "../db/cerateUser";
 import { getById } from "../db/getById";
+import { sendErrorMessage } from "../util";
 
 export const register = async (msg) => {
 	const chatId = msg.chat.id;
@@ -26,7 +27,7 @@ export const register = async (msg) => {
 		}
 	} catch (error) {
 		console.error('Sanity write error:', error);
-		bot.sendMessage(chatId, 'شئ ما خاطئ من فضلك حاوب مجددا');
+		sendErrorMessage(chatId);
 	}
 }
 

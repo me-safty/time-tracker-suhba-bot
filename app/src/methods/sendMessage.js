@@ -1,23 +1,38 @@
 import bot from "../bot";
+import { notAdminMessage } from "../messages";
+import { getMessageInfo, isAdmin, sendErrorMessage, sendTeleMessage } from "../util";
 
 export const sendMessage = async (msg, match) => {
-	const chatId = msg.chat.id;
-	const messageId = msg.message_id;
-	const value = `<strong>${match[1]}</strong>`
+	const {
+		messageId,
+		chatId,
+		userId
+	} = getMessageInfo(msg)
+	const value = match[1]
 
-	bot.deleteMessage(chatId, messageId).catch((error) => {
-		console.error('Failed to delete message:', error);
-	});
+	const isUserAdmin = await isAdmin(chatId, userId)
+	if (!isUserAdmin) {
+    return sendTeleMessage({
+			chatId,
+			value: notAdminMessage
+		})
+  }
+
+	bot.deleteMessage(chatId, messageId).catch(() => {
+		sendErrorMessage(chatId)
+	})
 
 	if (msg.reply_to_message) {
     const repliedMessageId = msg.reply_to_message.message_id;
-    bot.sendMessage(chatId, value, {
-			reply_to_message_id: repliedMessageId,
-			parse_mode: "HTML"
-		});
+		sendTeleMessage({
+			chatId,
+			value,
+			messageId: repliedMessageId
+		})
   } else {
-		bot.sendMessage(chatId, value, {
-			parse_mode: "HTML"
-		});	
+		sendTeleMessage({
+			chatId,
+			value
+		})
   }
 }
