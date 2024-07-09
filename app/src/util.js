@@ -1,5 +1,5 @@
 import moment from "moment-hijri"
-import { arabicDays, ranks } from "./consts";
+import { arabicDays, hamzaId, mohamedSaftyId, ranks } from "./consts";
 import { errorMessage } from "./messages";
 import bot from "./bot";
 
@@ -114,11 +114,21 @@ export const sendErrorMessage = (chatId) => {
   })
 }
 
-export const getTodayTime = (user, newValue) => {
+export const getTodayTime = (user, newValue = 0) => {
   return isSameDay(
     new Date(user.lastTimeEntryDate),
     new Date()
   )
-    ? user.todayTime
-    : newValue ?? 0
+    ? user.todayTime + newValue
+    : newValue
+}
+
+export const changeCustomTitle = async (chatId, userId, rankName) => {
+  if (userId !== hamzaId && userId !== mohamedSaftyId) {
+    const isUserAdmin = await isAdmin(chatId, userId)
+    if (!isUserAdmin) {
+      bot.promoteChatMember(chatId, userId)
+    }
+    bot.setChatAdministratorCustomTitle(chatId, userId, rankName);
+  }
 }

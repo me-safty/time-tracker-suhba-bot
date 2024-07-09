@@ -1,18 +1,20 @@
 import bot from "../bot";
-import { mohamedSaftyId } from "../consts";
+import { hamzaId, mohamedSaftyId } from "../consts";
 import { getById } from "../db/getById";
 import { client } from "../sanityClient";
-import { formatDate, getRank, getTodayTime, sendErrorMessage } from "../util";
+import { changeCustomTitle, formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage } from "../util";
 
 export const addTime = async (msg, match) => {
-	const chatId = msg.chat.id;
-	const value = parseInt(match[1]);
 	const {
-		id
-	} = msg.from
+		chatId,
+		userId
+	} = getMessageInfo(msg)
+
+	const value = parseInt(match[1])
+
 	if (!isNaN(value) || value.length) {
 		try {
-			const user = await getById(id)
+			const user = await getById(userId)
 			if (user) {
 				const todayTime = getTodayTime(user, value)	
 				const allTime = user.allTime + value
@@ -21,7 +23,12 @@ export const addTime = async (msg, match) => {
 					rankName,
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
-				const randomMessage = Math.floor(Math.random() * 40) === 4 || id === mohamedSaftyId
+
+				if (hasNewRank) {
+					await changeCustomTitle(chatId, userId, rankName)
+				}
+
+				const randomMessage = Math.floor(Math.random() * 40) === 4 || userId === mohamedSaftyId
 					? `جزاك الله خيرا يا ${rankName.split(" ")[0]} ${user.name.split(" ")[0]} `
 					: ""
 				const addTimeMessage = `<strong>إنجازك اليوم: ${todayTime}د
@@ -32,6 +39,7 @@ export const addTime = async (msg, match) => {
 
 				${randomMessage}</strong>
 				`
+
 				await client.createOrReplace({
 					...user,
 					allTime,
