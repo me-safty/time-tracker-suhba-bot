@@ -1,6 +1,14 @@
 import bot from "../bot";
 import { getById } from "../db/getById";
-import { arabicTodayName, formatDate, getHigriDate, getTimeByHours, hamzaId, ranks } from "../util";
+import {
+	arabicTodayName,
+	formatDate,
+	getHigriDate,
+	getTimeByHours,
+	hamzaId,
+	isSameDay,
+	ranks
+} from "../util";
 import { userNotRegisterMessage } from "./addTime";
 
 export const showStatus = async (msg) => {
@@ -13,11 +21,17 @@ export const showStatus = async (msg) => {
 	try {
 		const user = await getById(id)
 		if (user) {
+			const todayTime = isSameDay(
+				new Date(user.lastTimeEntryDate),
+				new Date()
+			)
+				? user.todayTime
+				: 0
 			bot.sendMessage(chatId, statusMessage({
 				id,
 				last_name,
 				name,
-				todayTime: user.todayTime,
+				todayTime,
         allTime: user.allTime,
 				rankName: ranks[user.rankCode]
 			}), {

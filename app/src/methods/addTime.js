@@ -26,7 +26,7 @@ export const addTime = async (msg, match) => {
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
 				const randomMessage = Math.floor(Math.random() * 40) === 4 || id === mohamedSaftyId
-					? `جزاك الله خيرا يا ${user.name} (${rankName})`
+					? `جزاك الله خيرا يا ${rankName.split(" ")[0]} ${user.name.split(" ")[0]} `
 					: ""
 				const addTimeMessage = `<strong>إنجازك اليوم: ${todayTime}د
 				
