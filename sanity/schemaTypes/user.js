@@ -32,6 +32,6 @@ export default {
       name: 'rankCode',
       title: 'rankCode',
       type: 'number',
-    },
+    }
   ],
 }
