@@ -1,8 +1,8 @@
 import bot from "../bot";
-import { hamzaId, mohamedSaftyId } from "../consts";
+import { mohamedSaftyId } from "../consts";
 import { getById } from "../db/getById";
 import { client } from "../sanityClient";
-import { changeCustomTitle, formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage } from "../util";
+import { formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage } from "../util";
 
 export const addTime = async (msg, match) => {
 	const {
@@ -44,7 +44,7 @@ export const addTime = async (msg, match) => {
 					...user,
 					allTime,
 					rankCode: +rankCode,
-					lastTimeEntryDate: formatDate(new Date()),
+					lastTimeEntryDate: formatDate(),
 					todayTime,
 				})
 				bot.sendMessage(chatId, addTimeMessage, {

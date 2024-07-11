@@ -9,6 +9,6 @@ export const createUser = async ({id, name}) => {
 		id,
 		name,
 		rankCode: 0,
-		lastTimeEntryDate: formatDate(new Date())
+		lastTimeEntryDate: formatDate()
 	})
 }

@@ -1,4 +1,4 @@
-import { getArabicDayName } from "./util"
+import { convertToGMTPlus3, getArabicDayName } from "./util"
 
 export const ranks = {
   0: "مواطن",
@@ -30,7 +30,11 @@ export const botCommands = {
   register: "#تسجيل_بالبوت",
   showStatus: "#عرض_إحصائياتي",
   showCommands: "#عرض_الأوامر",
-  showAllUsers: "#عرض_جميع_الإحصائيات"
+  showAllUsers: "#عرض_جميع_الإحصائيات",
+  startChallenge: "#بدء_التحدي",
+  joinChallenge: "#مشاركة_بالتحدي",
+  leaveChallenge: "#انسحاب_من_التحدي",
+  endChallenge: "#انتهاء_التحدي"
 }
 
 export const commands = {
@@ -39,10 +43,15 @@ export const commands = {
   showStatus: /#عرض_إحصائياتي/,
   showCommands: /#عرض_الأوامر/,
   showAllUsers: /#عرض_جميع_الإحصائيات/,
-  sendMessage: /#ارسل (.*)/
+  sendMessage: /#ارسل (.*)/,
+  startChallenge: /#بدء_التحدي (.*)/,
+  joinChallenge: /#مشاركة_بالتحدي/,
+  leaveChallenge: /#انسحاب_من_التحدي/,
+  endChallenge: /#انتهاء_التحدي/
 }
 
 export const mohamedSaftyId = 1273850613
 export const hamzaId = 6187883815
 
-export const arabicTodayName = getArabicDayName(new Date().getDay())
+export const todayDateGMT3 = () => convertToGMTPlus3(new Date())
+export const arabicTodayName = () => getArabicDayName(todayDateGMT3().getDay())

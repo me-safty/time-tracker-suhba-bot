@@ -1,9 +1,11 @@
 import bot from "../bot";
-import { arabicTodayName, hamzaId, ranks } from "../consts";
+import { hamzaId, ranks } from "../consts";
 import { getById } from "../db/getById";
 import { userNotRegisterMessage } from "./addTime";
 import {
+	convertToGMTPlus3,
 	formatDate,
+	getArabicDayName,
 	getHigriDate,
 	getMessageInfo,
 	getTimeByHours,
@@ -41,8 +43,10 @@ export const showStatus = async (msg) => {
 }
 
 const statusMessage = ({userId, name, todayTime, allTime, rankName}) => {
+const todayDateGMT3 = convertToGMTPlus3(new Date())
+const arabicTodayName = getArabicDayName(todayDateGMT3.getDay())
 	return `<b>الإحصائيات حول الأخ </b>${name}
-<b>${formatDate(new Date())} : ${arabicTodayName}</b>
+<b>${formatDate()} : ${arabicTodayName}</b>
 <b>${getHigriDate()} : ${arabicTodayName}</b>
 
 <b>الانجاز اليوم:</b> ${getTimeByHours(todayTime)}

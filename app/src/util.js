@@ -9,7 +9,8 @@ String.prototype.toArabicDigits= function(){
     return id[+w]
   });
 }
-export const formatDate = (date) => {
+export const formatDate = (date = new Date()) => {
+  date = convertToGMTPlus3(date)
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -28,6 +29,7 @@ export const getTimeByHours = (timeByMin) => {
 }
 
 export const getHigriDate = (date = new Date()) => {
+  date = convertToGMTPlus3(date)
   const m = moment(date);
   m.locale("ar")
   return m.format('iD - iMMMM - iYYYY هـ').toArabicDigits()
@@ -114,21 +116,45 @@ export const sendErrorMessage = (chatId) => {
   })
 }
 
+export const convertToGMTPlus3 = (date) => {
+  const originalTime = date.getTime();
+  const gmtPlus3Offset = 3 * 60 * 60 * 1000;
+  const gmtPlus3Date = new Date(originalTime + gmtPlus3Offset);
+  return gmtPlus3Date;
+}
+
 export const getTodayTime = (user, newValue = 0) => {
   return isSameDay(
     new Date(user.lastTimeEntryDate),
-    new Date()
+    convertToGMTPlus3(new Date())
   )
     ? user.todayTime + newValue
     : newValue
 }
 
-export const changeCustomTitle = async (chatId, userId, rankName) => {
-  if (userId !== hamzaId && userId !== mohamedSaftyId) {
-    const isUserAdmin = await isAdmin(chatId, userId)
-    if (!isUserAdmin) {
-      bot.promoteChatMember(chatId, userId)
-    }
-    bot.setChatAdministratorCustomTitle(chatId, userId, rankName);
-  }
-}
+// export const changeCustomTitle = async (chatId, userId, rankName) => {
+//   if (userId !== hamzaId && userId !== mohamedSaftyId) {
+//     // const isUserAdmin = await isAdmin(chatId, userId)
+//     // if (!isUserAdmin) {
+//       // }
+//       try {
+//         await bot.promoteChatMember(chatId, userId, {
+//           can_promote_members: false,
+//           can_change_info: false,
+//           can_post_messages: false,
+//           can_edit_messages: false,
+//           can_delete_messages: false,
+//           can_invite_users: false,
+//           can_restrict_members: false,
+//           can_pin_messages: false,
+//           can_manage_voice_chats: false,
+//           is_anonymous: false
+//         })
+//         // await bot.setChatAdministratorCustomTitle(chatId, userId, rankName);
+//       console.log("================================")
+//     }
+//     catch (error) {
+//       console.log(error)
+//     }
+//   }
+// }
