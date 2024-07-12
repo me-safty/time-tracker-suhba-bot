@@ -1,35 +1,22 @@
-import { addUserToChallenge } from "../../db/challenge/addUserToChallenge";
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge";
+import { notAdminMessage } from "../../messages";
 import { client } from "../../sanityClient";
-import { sendTeleMessage,  sendErrorMessage, getMessageInfo, isAdmin } from "../../util";
+import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, isSameDay, convertToGMTPlus3 } from "../../util";
 import { noActiveChallengeMessage } from "./joinChallenge";
 
 export const endChallengeDay = async (msg) => {
 	const {
 		chatId,
-		userId,
-		name
+		userId
 	} = getMessageInfo(msg)
 	try {
-
-		/*
-		
-		get active users
-
-		xx =>	add users today time in the challenge whit the date of the day
-
-		check if the user is success in the challenge or not
-
-		send today status message to the chat
-
-		*/
-
-
-
-
-
-
-
+		const isUserAdmin = await isAdmin(chatId, userId)
+		if (!isUserAdmin) {
+			return sendTeleMessage({
+				chatId,
+				value: notAdminMessage
+			})
+		}
 
 		const activeChallenge = await getActiveChallenge()
 		if (!activeChallenge) {
@@ -42,7 +29,12 @@ export const endChallengeDay = async (msg) => {
 		const challengeUsers = activeChallenge?.users ?? []
 		const challengeUsersIds = challengeUsers?.map(user => user.userId)
 
-		const usersDays = await client.fetch(`*[_type == "user" && id in $challengeUsersIds] {
+		const usersDays = await client.fetch(`*[
+				_type == "user" &&
+				id in $challengeUsersIds
+			] | order(lastTimeEntryDate desc, todayTime desc) {
+				id,
+				name,
 				todayTime,
 				"date": lastTimeEntryDate
 			}`
@@ -52,45 +44,72 @@ export const endChallengeDay = async (msg) => {
 			}
 		)
 
-		if (!challengeUsersIds.includes(userId)) {
-			await addUserToChallenge(activeChallenge._id, userId, name)
-			sendTeleMessage({
-				chatId,
-				value: "تم التسجيل في التحدي"
+		const isSuccess = (todayTime, challengeTime, date) => {
+			return isSameDay(
+				new Date(date),
+				convertToGMTPlus3(new Date())
+			) && todayTime >= challengeTime * 60
+		}
+
+		const activeChallengeWhitNewUsers = {
+			...activeChallenge,
+			users: challengeUsers.map((user) => {
+				const challengeDay = usersDays.find((day) => day.id === user.userId)
+				const isUserSuccess = isSuccess(
+					challengeDay?.todayTime ?? 0,
+					activeChallenge.challengeTime,
+					challengeDay?.date
+				)
+				return isUserSuccess
+					? {
+							...user,
+							days: [
+								...user.days,
+								{
+									todayTime: challengeDay?.todayTime ?? 0,
+									date: challengeDay?.date
+								}
+							]
+						}
+					: user
 			})
 		}
-		else {
-			sendTeleMessage({
-        chatId,
-        value: "المستغدم مسجل في التحدي بالفعل"
-      })
-		}
+
+		await client.createOrReplace(activeChallengeWhitNewUsers)
+
+		const statusMessage = usersDays.reduce((acc, day, i) => {
+			if (isSuccess(day.todayTime, activeChallenge.challengeTime, day.date)) {
+				acc += userSuccessMessage(day.name, i + 1)
+			} else {
+				acc += userFailedMessage(day.name, i + 1)
+			}
+			return acc
+		}, initMessage)
+
+		sendTeleMessage({
+			chatId,
+      value: statusMessage
+		})
+
 	} catch (error) {
 		console.error('Sanity write error:', error);
 		sendErrorMessage(chatId);
 	}
 }
 
-// export const challengeCreatedMessage = (challengeTime) => `.
 
-// خطوات النور تبدأ من هنا ..
+const initMessage = `.                 نتائج التحدي لليوم : 
 
-// حيث تقليب الصّفحات، وخطُّ الكلمات، وصناعة الهوامش ..
+`
 
-// قم لنرصف الطّريق معًا..
+const userSuccessMessage = (username, i) =>
+`${i + "- " + username} ( لقد نجح بالتحدي ✅ ) 
+نتيجة اليوم للتحدي : لقد نجح
 
-// فالصّاحب في هذا المشوار دليل.. واستعن بمولاكَ فالاستعانة به أمّ الطّريق!
+`
 
+const userFailedMessage = (username, i) => 
+`${i + "- " + username} ( لقد فشل 🤣❌ ) 
+نتيجة اليوم للتحدي : لقد فشل
 
-
-// تم بدأ التحدي عدد الساعات المطلوبه في اليوم => ${challengeTime} ساعات
-
-// .
-// `
-
-// export const activeChallengesMessage = `.
-
-// هناك تحدي نشط بالفعل
-
-// .
-// `
+`

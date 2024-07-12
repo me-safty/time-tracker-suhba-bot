@@ -47,7 +47,8 @@ export const commands = {
   startChallenge: /#بدء_التحدي (.*)/,
   joinChallenge: /#مشاركة_بالتحدي/,
   leaveChallenge: /#انسحاب_من_التحدي/,
-  endChallenge: /#انتهاء_التحدي/
+  endChallenge: /#انتهاء_التحدي/,
+  endChallengeDay: /#انهاء_تحدي_اليوم/
 }
 
 export const mohamedSaftyId = 1273850613

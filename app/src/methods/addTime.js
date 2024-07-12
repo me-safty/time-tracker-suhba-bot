@@ -24,9 +24,9 @@ export const addTime = async (msg, match) => {
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
 
-				if (hasNewRank) {
-					await changeCustomTitle(chatId, userId, rankName)
-				}
+				// if (hasNewRank) {
+				// 	await changeCustomTitle(chatId, userId, rankName)
+				// }
 
 				const randomMessage = Math.floor(Math.random() * 40) === 4 || userId === mohamedSaftyId
 					? `جزاك الله خيرا يا ${rankName.split(" ")[0]} ${user.name.split(" ")[0]} `

@@ -9,6 +9,8 @@ import { showAllUsers } from "./methods/showAllUsers";
 import { sendMessage } from "./methods/sendMessage";
 import { startChallenge } from "./methods/challange/startChallenge";
 import { joinChallenge } from "./methods/challange/joinChallenge";
+import { endChallengeDay } from "./methods/challange/endChallengeDay";
+import { convertToGMTPlus3, formatDate, isSameDay } from "./util";
 require('events').EventEmitter.defaultMaxListeners = 20;
 
 require('dotenv').config();
@@ -32,5 +34,13 @@ bot.onText(commands.showAllUsers, (msg) => showAllUsers(msg));
 bot.onText(commands.sendMessage, (msg, match) => sendMessage(msg, match));
 bot.onText(commands.startChallenge, (msg, match) => startChallenge(msg, match));
 bot.onText(commands.joinChallenge, (msg) => joinChallenge(msg));
+bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg));
+
+const datee = new Date().toLocaleString("en-US", {timeZone: "Asia/Riyadh"})
+
+console.log(isSameDay(
+    new Date(formatDate()),
+    convertToGMTPlus3(new Date())
+  ), new Date(), convertToGMTPlus3(new Date()), new Date(formatDate()), datee, new Date(datee))
 
 module.exports = app
