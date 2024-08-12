@@ -96,6 +96,7 @@ export const getMessageInfo = (msg) => {
 		first_name,
 		last_name,
 		id,
+    username
 	} = msg.from
   return {
     chatId: msg.chat.id,
@@ -106,6 +107,7 @@ export const getMessageInfo = (msg) => {
       : first_name,
     first_name,
     last_name,
+    username
   }
 }
 

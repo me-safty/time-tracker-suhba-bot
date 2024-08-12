@@ -14,6 +14,11 @@ export default {
       type: 'date',
     },
     {
+      name: 'lastTimeEntry',
+      title: 'lastTimeEntry',
+      type: 'number',
+    },
+    {
       name: 'allTime',
       title: 'allTime',
       type: 'number',

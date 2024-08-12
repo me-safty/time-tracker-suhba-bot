@@ -12,7 +12,7 @@ export const ranks = {
   400: "عميد",
   450: "لواء",
   500: "فريق",
-  550: "مُشير 🔱"
+  550: "مُشير"
 }
 
 export const arabicDays = [
@@ -34,7 +34,8 @@ export const botCommands = {
   startChallenge: "#بدء_التحدي",
   joinChallenge: "#مشاركة_بالتحدي",
   leaveChallenge: "#انسحاب_من_التحدي",
-  endChallenge: "#انتهاء_التحدي"
+  endChallenge: "#انتهاء_التحدي",
+  deleteLastSession: "#حذف_الجلسة"
 }
 
 export const commands = {
@@ -43,12 +44,13 @@ export const commands = {
   showStatus: /#عرض_إحصائياتي/,
   showCommands: /#عرض_الأوامر/,
   showAllUsers: /#عرض_جميع_الإحصائيات/,
-  sendMessage: /#ارسل (.*)/,
+  sendMessage: /#ارسل ([\s\S]*)/,
   startChallenge: /#بدء_التحدي (.*)/,
   joinChallenge: /#مشاركة_بالتحدي/,
   leaveChallenge: /#انسحاب_من_التحدي/,
   endChallenge: /#انتهاء_التحدي/,
-  endChallengeDay: /#انهاء_تحدي_اليوم/
+  endChallengeDay: /#انهاء_تحدي_اليوم/,
+  deleteLastSession: /#حذف_الجلسة/
 }
 
 export const mohamedSaftyId = 1273850613
