@@ -10,13 +10,13 @@ export const endChallengeDay = async (msg) => {
 		userId
 	} = getMessageInfo(msg)
 	try {
-		const isUserAdmin = await isAdmin(chatId, userId)
-		if (!isUserAdmin) {
-			return sendTeleMessage({
-				chatId,
-				value: notAdminMessage
-			})
-		}
+		// const isUserAdmin = await isAdmin(chatId, userId)
+		// if (!isUserAdmin) {
+		// 	return sendTeleMessage({
+		// 		chatId,
+		// 		value: notAdminMessage
+		// 	})
+		// }
 
 		const activeChallenge = await getActiveChallenge()
 		if (!activeChallenge) {
@@ -45,10 +45,12 @@ export const endChallengeDay = async (msg) => {
 		)
 
 		const isSuccess = (todayTime, challengeTime, date) => {
-			return isSameDay(
-				new Date(date),
-				convertToGMTPlus3(new Date())
-			) && todayTime >= challengeTime * 60
+			return todayTime >= challengeTime * 60
+			//  isSameDay(
+			// 	new Date(date),
+			// 	convertToGMTPlus3(new Date())
+			// ) && 
+			// todayTime >= challengeTime * 60
 		}
 
 		const activeChallengeWhitNewUsers = {
@@ -57,7 +59,7 @@ export const endChallengeDay = async (msg) => {
 				const challengeDay = usersDays.find((day) => day.id === user.userId)
 				const isUserSuccess = isSuccess(
 					challengeDay?.todayTime ?? 0,
-					activeChallenge.challengeTime,
+					activeChallenge.challengeTime * 60,
 					challengeDay?.date
 				)
 				return isUserSuccess
@@ -75,7 +77,7 @@ export const endChallengeDay = async (msg) => {
 			})
 		}
 
-		await client.createOrReplace(activeChallengeWhitNewUsers)
+		// await client.createOrReplace(activeChallengeWhitNewUsers)
 
 		const statusMessage = usersDays.reduce((acc, day, i) => {
 			if (isSuccess(day.todayTime, activeChallenge.challengeTime, day.date)) {

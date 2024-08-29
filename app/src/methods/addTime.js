@@ -12,6 +12,11 @@ export const addTime = async (msg, match) => {
 
 	const value = parseInt(match[1])
 
+	if (value <= 0) {
+		sendErrorMessage(chatId)
+		return
+	}
+
 	if (!isNaN(value) || value.length) {
 		try {
 			const user = await getById(userId)
