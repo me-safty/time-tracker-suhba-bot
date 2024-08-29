@@ -33,7 +33,7 @@ export const addTime = async (msg, match) => {
 				// 	await changeCustomTitle(chatId, userId, rankName)
 				// }
 
-				const randomMessage = Math.floor(Math.random() * 40) === 4 || userId === mohamedSaftyId
+				const randomMessage = Math.floor(Math.random() * 40) === 4
 					? `جزاك الله خيرا يا ${rankName.split(" ")[0]} ${user.name.split(" ")[0]} `
 					: ""
 				const addTimeMessage = `<strong>إنجازك اليوم: ${todayTime}د
