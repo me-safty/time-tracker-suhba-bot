@@ -112,7 +112,7 @@ export const autoEndChallengeDay = async () => {
 	if (activeChallenge) {
 		return scheduleJob( {
 			hour: 23,
-			minute: 17,
+			minute: 21,
 			second: 0,
 			tz: 'Europe/Istanbul'
 		}, () => {
