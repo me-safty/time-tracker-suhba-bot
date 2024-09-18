@@ -1,6 +1,5 @@
 import { suhbaChatId } from "../../consts";
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge";
-import { notAdminMessage } from "../../messages";
 import { client } from "../../sanityClient";
 import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, isSameDay, convertToGMTPlus3 } from "../../util";
 import { noActiveChallengeMessage } from "./joinChallenge";
@@ -35,16 +34,6 @@ export const sendEndChallengeDay = async (chatId) => {
 		)
 
 		const isSuccess = (todayTime, challengeTime, date) => {
-			// return todayTime >= challengeTime * 60
-			console.log(new Date(date),
-			convertToGMTPlus3(new Date()))
-			let date1 = new Date(date)
-			let date2 = convertToGMTPlus3(new Date())
-			console.log(
-				date1.getFullYear() , date2.getFullYear() ,
-		date1.getMonth() , date2.getMonth() ,
-		date1.getDate() , date2.getDate()
-			)
 			return isSameDay(
 				new Date(date),
 				convertToGMTPlus3(new Date())
@@ -57,7 +46,7 @@ export const sendEndChallengeDay = async (chatId) => {
 				const challengeDay = usersDays.find((day) => day.id === user.userId)
 				const isUserSuccess = isSuccess(
 					challengeDay?.todayTime ?? 0,
-					activeChallenge.challengeTime * 60,
+					activeChallenge.challengeTime,
 					challengeDay?.date
 				)
 				return isUserSuccess
@@ -66,6 +55,7 @@ export const sendEndChallengeDay = async (chatId) => {
 							days: [
 								...user.days,
 								{
+									"_key": challengeDay?.todayTime ?? 0,
 									todayTime: challengeDay?.todayTime ?? 0,
 									date: challengeDay?.date
 								}
@@ -74,9 +64,8 @@ export const sendEndChallengeDay = async (chatId) => {
 					: user
 			})
 		}
-		console.log(JSON.stringify(activeChallengeWhitNewUsers, null, 2))
 
-		// await client.createOrReplace(activeChallengeWhitNewUsers)
+		await client.createOrReplace(activeChallengeWhitNewUsers)
 
 		const statusMessage = usersDays.reduce((acc, day, i) => {
 			if (isSuccess(day.todayTime, activeChallenge.challengeTime, day.date)) {
@@ -98,38 +87,41 @@ export const sendEndChallengeDay = async (chatId) => {
 	}
 }
 
-export const endChallengeDay = async (msg) => {
-	const {
-		chatId,
-		userId
-	} = getMessageInfo(msg)
-	const isUserAdmin = await isAdmin(chatId, userId)
-	if (!isUserAdmin) {
-		return sendTeleMessage({
-			chatId,
-			value: notAdminMessage
-		})
-	}
-	try {
-		await sendEndChallengeDay(chatId)
-	} catch (error) {
-		console.error('Sanity write error:', error);
-		sendErrorMessage(chatId);
-	}
-}
+// export const endChallengeDay = async (msg) => {
+// 	const {
+// 		chatId,
+// 		userId
+// 	} = getMessageInfo(msg)
+// 	const isUserAdmin = await isAdmin(chatId, userId)
+// 	if (!isUserAdmin) {
+// 		return sendTeleMessage({
+// 			chatId,
+// 			value: notAdminMessage
+// 		})
+// 	}
+// 	try {
+// 		await sendEndChallengeDay(chatId)
+// 	} catch (error) {
+// 		console.error('Sanity write error:', error);
+// 		sendErrorMessage(chatId);
+// 	}
+// }
 
 export const autoEndChallengeDay = async () => {
 	const activeChallenge = await getActiveChallenge()
 	if (activeChallenge) {
 		return scheduleJob( {
-			hour: 22,
-			minute: 55,
+			hour: 23,
+			minute: 17,
 			second: 0,
 			tz: 'Europe/Istanbul'
 		}, () => {
 			// sendEndChallengeDay(suhbaChatId)
-			sendEndChallengeDay("-1002268002533")
-			// sendErrorMessage(suhbaChatId);
+			sendTeleMessage({
+				suhbaChatId,
+				value: "test"
+			})
+			// sendEndChallengeDay("-1002268002533")
 		})
 	}
 }

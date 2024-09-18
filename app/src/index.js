@@ -34,7 +34,6 @@ bot.onText(commands.showAllUsers, (msg) => showAllUsers(msg));
 bot.onText(commands.sendMessage, (msg, match) => sendMessage(msg, match));
 bot.onText(commands.startChallenge, (msg, match) => startChallenge(msg, match));
 bot.onText(commands.joinChallenge, (msg) => joinChallenge(msg));
-bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg));
 bot.onText(commands.deleteLastSession, (msg) => deleteLastSession(msg));
 
 void (async () => {
