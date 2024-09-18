@@ -112,19 +112,11 @@ export const autoEndChallengeDay = async () => {
 	if (activeChallenge) {
 		return scheduleJob( {
 			hour: 23,
-			minute: 21,
-			second: 0,
+			minute: 59,
+			second: 55,
 			tz: 'Europe/Istanbul'
 		}, () => {
-			// sendEndChallengeDay(suhbaChatId)
-			sendTeleMessage({
-				chatId: suhbaChatId,
-				value: "test"
-			})
-			sendTeleMessage({
-				chatId: "-1002268002533",
-				value: "test"
-			})
+			sendEndChallengeDay(suhbaChatId)
 			// sendEndChallengeDay("-1002268002533")
 		})
 	}
