@@ -45,7 +45,7 @@ export const commands = {
   showCommands: /#عرض_الأوامر/,
   showAllUsers: /#عرض_جميع_الإحصائيات/,
   sendMessage: /#ارسل ([\s\S]*)/,
-  startChallenge: /#بدء_التحدي (.*)/,
+  startChallenge: /#بدء_التحدي (.*) (.*)/,
   joinChallenge: /#مشاركة_بالتحدي/,
   leaveChallenge: /#انسحاب_من_التحدي/,
   endChallenge: /#انتهاء_التحدي/,
@@ -58,3 +58,5 @@ export const hamzaId = 6187883815
 
 export const todayDateGMT3 = () => convertToGMTPlus3(new Date())
 export const arabicTodayName = () => getArabicDayName(todayDateGMT3().getDay())
+
+export const suhbaChatId = "-1002037087475"

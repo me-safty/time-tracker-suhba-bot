@@ -9,7 +9,7 @@ import { showAllUsers } from "./methods/showAllUsers";
 import { sendMessage } from "./methods/sendMessage";
 import { startChallenge } from "./methods/challange/startChallenge";
 import { joinChallenge } from "./methods/challange/joinChallenge";
-import { endChallengeDay } from "./methods/challange/endChallengeDay";
+import { autoEndChallengeDay, endChallengeDay } from "./methods/challange/endChallengeDay";
 import { deleteLastSession } from "./methods/deleteLastSession";
 require('events').EventEmitter.defaultMaxListeners = 20;
 
@@ -36,5 +36,9 @@ bot.onText(commands.startChallenge, (msg, match) => startChallenge(msg, match));
 bot.onText(commands.joinChallenge, (msg) => joinChallenge(msg));
 bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg));
 bot.onText(commands.deleteLastSession, (msg) => deleteLastSession(msg));
+
+void (async () => {
+	await autoEndChallengeDay()
+})()
 
 module.exports = app

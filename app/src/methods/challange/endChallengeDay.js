@@ -1,23 +1,13 @@
+import { suhbaChatId } from "../../consts";
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge";
 import { notAdminMessage } from "../../messages";
 import { client } from "../../sanityClient";
 import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, isSameDay, convertToGMTPlus3 } from "../../util";
 import { noActiveChallengeMessage } from "./joinChallenge";
+import { scheduleJob } from "node-schedule";
 
-export const endChallengeDay = async (msg) => {
-	const {
-		chatId,
-		userId
-	} = getMessageInfo(msg)
+export const sendEndChallengeDay = async (chatId) => {
 	try {
-		// const isUserAdmin = await isAdmin(chatId, userId)
-		// if (!isUserAdmin) {
-		// 	return sendTeleMessage({
-		// 		chatId,
-		// 		value: notAdminMessage
-		// 	})
-		// }
-
 		const activeChallenge = await getActiveChallenge()
 		if (!activeChallenge) {
 			return sendTeleMessage({
@@ -45,12 +35,20 @@ export const endChallengeDay = async (msg) => {
 		)
 
 		const isSuccess = (todayTime, challengeTime, date) => {
-			return todayTime >= challengeTime * 60
-			//  isSameDay(
-			// 	new Date(date),
-			// 	convertToGMTPlus3(new Date())
-			// ) && 
-			// todayTime >= challengeTime * 60
+			// return todayTime >= challengeTime * 60
+			console.log(new Date(date),
+			convertToGMTPlus3(new Date()))
+			let date1 = new Date(date)
+			let date2 = convertToGMTPlus3(new Date())
+			console.log(
+				date1.getFullYear() , date2.getFullYear() ,
+		date1.getMonth() , date2.getMonth() ,
+		date1.getDate() , date2.getDate()
+			)
+			return isSameDay(
+				new Date(date),
+				convertToGMTPlus3(new Date())
+			) && todayTime >= challengeTime * 60
 		}
 
 		const activeChallengeWhitNewUsers = {
@@ -76,6 +74,7 @@ export const endChallengeDay = async (msg) => {
 					: user
 			})
 		}
+		console.log(JSON.stringify(activeChallengeWhitNewUsers, null, 2))
 
 		// await client.createOrReplace(activeChallengeWhitNewUsers)
 
@@ -99,6 +98,41 @@ export const endChallengeDay = async (msg) => {
 	}
 }
 
+export const endChallengeDay = async (msg) => {
+	const {
+		chatId,
+		userId
+	} = getMessageInfo(msg)
+	const isUserAdmin = await isAdmin(chatId, userId)
+	if (!isUserAdmin) {
+		return sendTeleMessage({
+			chatId,
+			value: notAdminMessage
+		})
+	}
+	try {
+		await sendEndChallengeDay(chatId)
+	} catch (error) {
+		console.error('Sanity write error:', error);
+		sendErrorMessage(chatId);
+	}
+}
+
+export const autoEndChallengeDay = async () => {
+	const activeChallenge = await getActiveChallenge()
+	if (activeChallenge) {
+		return scheduleJob( {
+			hour: 22,
+			minute: 55,
+			second: 0,
+			tz: 'Europe/Istanbul'
+		}, () => {
+			// sendEndChallengeDay(suhbaChatId)
+			sendEndChallengeDay("-1002268002533")
+			// sendErrorMessage(suhbaChatId);
+		})
+	}
+}
 
 const initMessage = `.                 نتائج التحدي لليوم : 
 

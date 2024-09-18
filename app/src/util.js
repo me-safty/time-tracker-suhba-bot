@@ -64,7 +64,14 @@ export const getRank = (allTime) => {
 export const isAdmin = async (chatId, userId) => {
   try {
     const chatAdmins = await bot.getChatAdministrators(chatId)
-    const isAdmin = chatAdmins.some(admin => admin.user.id === userId)
+    const user = chatAdmins.find(admin => admin.user.id === userId)
+    const isAdmin = user
+      ? (
+          user.can_change_info
+            && user.can_delete_messages
+            && user.can_restrict_members
+        ) || user.status === "creator"
+      : false
     return isAdmin
   } catch {
     return false

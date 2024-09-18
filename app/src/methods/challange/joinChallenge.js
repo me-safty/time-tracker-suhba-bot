@@ -38,7 +38,7 @@ export const joinChallenge = async (msg) => {
 
 const joinChallengeMessage = `.
 
-تم التسجيل في التحدي, ارنا عزيمة الرجال (:)
+تم التسجيل في التحدي, ارنا عزيمة الرجال (:
 
 
 .`
