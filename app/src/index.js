@@ -9,7 +9,7 @@ import { showAllUsers } from "./methods/showAllUsers";
 import { sendMessage } from "./methods/sendMessage";
 import { startChallenge } from "./methods/challange/startChallenge";
 import { joinChallenge } from "./methods/challange/joinChallenge";
-import { autoEndChallengeDay, endChallengeDay } from "./methods/challange/endChallengeDay";
+import { autoEndChallengeDay } from "./methods/challange/endChallengeDay";
 import { deleteLastSession } from "./methods/deleteLastSession";
 require('events').EventEmitter.defaultMaxListeners = 20;
 

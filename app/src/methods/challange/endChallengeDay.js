@@ -121,6 +121,10 @@ export const autoEndChallengeDay = async () => {
 				chatId: suhbaChatId,
 				value: "test"
 			})
+			sendTeleMessage({
+				chatId: "-1002268002533",
+				value: "test"
+			})
 			// sendEndChallengeDay("-1002268002533")
 		})
 	}
