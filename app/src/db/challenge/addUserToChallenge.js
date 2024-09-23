@@ -4,15 +4,16 @@ export const addUserToChallenge = async (documentId, userId, name) => {
 	const userChallenge = {
 		_key: userId,
 		userId,
+		isSuccess: false,
 		name,
-		days: []
+		days: [],
 	}
 	try {
 		await client
 			.patch(documentId)
 			.setIfMissing({ users: [] })
-			.append('users', [userChallenge])
-			.commit() 
+			.append("users", [userChallenge])
+			.commit()
 	} catch (error) {
 		console.error(error)
 	}

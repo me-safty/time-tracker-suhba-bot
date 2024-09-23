@@ -7,7 +7,7 @@ import { formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage } f
 export const addTime = async (msg, match) => {
 	const {
 		chatId,
-		userId
+		userId,
 	} = getMessageInfo(msg)
 
 	const value = parseInt(match[1])

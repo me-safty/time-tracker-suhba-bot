@@ -14,11 +14,16 @@ export default {
       type: 'number',
     },
     {
+      name: 'challengeDays',
+      title: 'challengeDays',
+      type: 'number',
+    },
+    {
       name: 'isFinished',
       title: 'isFinished',
       type: 'boolean',
     },
-		{
+    {
       name: 'users',
       title: 'users',
       type: 'array',
@@ -28,43 +33,48 @@ export default {
           title: 'user',
           type: 'object',
           fields: [
-						{
-							name: 'userId',
-							title: 'userId',
-							type: 'number'
-						},
-						{
-							name: 'name',
-							title: 'name',
-							type: 'string'
-						},
-						{
-							name: 'days',
-							title: 'days',
-							type: 'array',
-							of: [
-								{
-									name: 'day',
-									title: 'day',
-									type: 'object',
-									fields: [
-										{
-											name: 'todayTime',
-											title: 'todayTime',
-											type: 'number'
-										},
-										{
-											name: 'date',
-											title: 'date',
-											type: 'date'
-										}
-									],
-								},
-							],
-						}
-					],
+            {
+              name: 'userId',
+              title: 'userId',
+              type: 'number',
+            },
+            {
+              name: 'isSuccess',
+              title: 'isSuccess',
+              type: 'boolean',
+            },
+            {
+              name: 'name',
+              title: 'name',
+              type: 'string',
+            },
+            {
+              name: 'days',
+              title: 'days',
+              type: 'array',
+              of: [
+                {
+                  name: 'day',
+                  title: 'day',
+                  type: 'object',
+                  fields: [
+                    {
+                      name: 'todayTime',
+                      title: 'todayTime',
+                      type: 'number',
+                    },
+                    {
+                      name: 'date',
+                      title: 'date',
+                      type: 'date',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
-    }
+    },
   ],
 }
