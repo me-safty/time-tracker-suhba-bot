@@ -52,7 +52,9 @@ const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName }) 
 	const challengeSuccessNum = await getNumberOfSuccessChallengesForUser(userId)
 
 	let challengeSuccessNumMessage = ""
-	if (challengeSuccessNum <= 5) {
+	if (challengeSuccessNum === 0) {
+		challengeSuccessNumMessage = ` (: لا تزال في بداية الطريق`
+	} else if (challengeSuccessNum <= 5) {
 		for (let i = 0; i < challengeSuccessNum; i++) {
 			challengeSuccessNumMessage += "🏆 "
 		}
