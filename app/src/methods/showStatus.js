@@ -49,8 +49,8 @@ export const showStatus = async (msg) => {
 const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName }) => {
 	const todayDateGMT3 = convertToGMTPlus3(new Date())
 	const arabicTodayName = getArabicDayName(todayDateGMT3.getDay())
+	const leaderBoardRank = await getMyRankFromLeaderBoard(userId)
 	const challengeSuccessNum = await getNumberOfSuccessChallengesForUser(userId)
-
 	let challengeSuccessNumMessage = ""
 	if (challengeSuccessNum === 0) {
 		challengeSuccessNumMessage = ` (: لا تزال في بداية الطريق`
@@ -70,7 +70,7 @@ const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName }) 
 
 <strong>الإنجاز منذ دخولك المجموعة: </strong>${getTimeByHours(allTime)}
 
-<strong>الترتيب: </strong> ${getChallengeRank(await getMyRankFromLeaderBoard(userId))}
+<strong>الترتيب: </strong> ${userId === hamzaId ? "رأس الهرم" : getChallengeRank(leaderBoardRank)}
 
 <strong>عدد التحديات الناجح بها : </strong> ${challengeSuccessNumMessage} 
 
