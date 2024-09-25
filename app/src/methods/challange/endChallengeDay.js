@@ -1,7 +1,7 @@
 import { suhbaChatId } from "../../consts"
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge"
 import { client } from "../../sanityClient"
-import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin } from "../../util"
+import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, formatDate } from "../../util"
 import { getChallengeDayMessage } from "./getChallengeDayMessage"
 import { getEndChallengeMessage } from "./getEndChallengeMessage"
 import { noActiveChallengeMessage } from "./joinChallenge"
@@ -40,12 +40,15 @@ export const sendEndChallengeDay = async (chatId) => {
 			...activeChallenge,
 			users: challengeUsers.map((user) => {
 				const challengeDay = usersDays.find((day) => day.id === user.userId)
+				const isSameDay = challengeDay?.date === formatDate(new Date())
 				const days = [
 					...user.days,
 					{
-						_key: `${challengeDay?.date}`,
-						todayTime: challengeDay?.todayTime ?? 0,
-						date: challengeDay?.date,
+						_key: `${formatDate(new Date())}`,
+						todayTime: isSameDay
+							? challengeDay?.todayTime ?? 0
+							: 0,
+						date: formatDate(new Date()),
 					},
 				]
 				const isSuccessOnChallenge =

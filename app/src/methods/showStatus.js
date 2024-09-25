@@ -78,7 +78,5 @@ const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName }) 
 
 <strong>إحصائيات الأسبوع : </strong> قريبا... 
 
-<strong>الرتبة: </strong>${userId === hamzaId ? "امير المؤمنين" : rankName}
-
-.`
+<strong>الرتبة: </strong>${userId === hamzaId ? "امير المؤمنين" : rankName}`
 }

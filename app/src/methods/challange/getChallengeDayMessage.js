@@ -7,20 +7,22 @@ export const getChallengeDayMessage = (activeChallenge) => {
 			isSameDay(new Date(date), convertToGMTPlus3(new Date())) && todayTime >= challengeTime * 60
 		)
 	}
-	const statusMessage = activeChallenge.users.reduce((acc, userDay, i) => {
-		const currentDay = userDay.days?.find((day) => day.date === formatDate(new Date()))
-		const isUserSuccess = currentDay
-			? isSuccess(currentDay.todayTime, activeChallenge.challengeTime, currentDay.date)
-			: false
-		acc += userStateMessage(
-			i,
-			userDay.name,
-			userDay.days,
-			activeChallenge.challengeTime,
-			isUserSuccess
-		)
-		return acc
-	}, initMessage(activeChallenge.users[0].days.length - 1))
+	const statusMessage = activeChallenge.users
+		.sort((a, b) => b.days.at(-1).todayTime - a.days.at(-1).todayTime)
+		.reduce((acc, userDay, i) => {
+			const currentDay = userDay.days?.find((day) => day.date === formatDate(new Date()))
+			const isUserSuccess = currentDay
+				? isSuccess(currentDay.todayTime, activeChallenge.challengeTime, currentDay.date)
+				: false
+			acc += userStateMessage(
+				i,
+				userDay.name,
+				userDay.days,
+				activeChallenge.challengeTime,
+				isUserSuccess
+			)
+			return acc
+		}, initMessage(activeChallenge.users[0].days.length - 1))
 	return statusMessage
 }
 
