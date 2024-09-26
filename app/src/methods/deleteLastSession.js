@@ -1,13 +1,16 @@
 import { getById } from "../db/getById";
 import { messages } from "../messages";
 import { client } from "../sanityClient";
-import { convertToGMTPlus3, getMessageInfo, isSameDay, sendErrorMessage, sendTeleMessage } from "../util";
+import { convertToGMTPlus3, getMessageInfo, isLegalChat, isSameDay, sendErrorMessage, sendTeleMessage } from "../util";
 
 export const deleteLastSession = async (msg) => {
 	const {
 		chatId,
 		userId
 	} = getMessageInfo(msg)
+
+	if (!isLegalChat(chatId)) return
+
 	try {
 		const user = await getById(userId)
 		if (user) {

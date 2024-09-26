@@ -1,12 +1,14 @@
 import { getById } from "../db/getById";
 import { client } from "../sanityClient";
-import { formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage, sendTeleMessage } from "../util";
+import { formatDate, getMessageInfo, getRank, getTodayTime, isLegalChat, sendErrorMessage, sendTeleMessage } from "../util";
 
 export const addTime = async (msg, match) => {
 	const {
 		chatId,
 		userId,
 	} = getMessageInfo(msg)
+
+	if (!isLegalChat(chatId)) return
 
 	const value = parseInt(match[1])
 

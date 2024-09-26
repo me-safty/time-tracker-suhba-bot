@@ -9,6 +9,7 @@ import {
 	getMessageInfo,
 	getTimeByHours,
 	getTodayTime,
+	isLegalChat,
 	sendErrorMessage,
 	sendTeleMessage,
 } from "../util"
@@ -18,6 +19,9 @@ import { getNumberOfSuccessChallengesForUser } from "../db/challenge/getNumberOf
 
 export const showStatus = async (msg) => {
 	const { chatId, name, userId } = getMessageInfo(msg)
+
+	if (!isLegalChat(chatId)) return
+
 	try {
 		const user = await getById(userId)
 		if (user) {

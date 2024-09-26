@@ -6,10 +6,12 @@ import {
 	sendErrorMessage,
 	getMessageInfo,
 	isAdmin,
+	isLegalChat,
 } from "../../util"
 
 export const startChallenge = async (msg, match) => {
 	const { chatId, userId } = getMessageInfo(msg)
+	if (!isLegalChat(chatId)) return
 	const challengeTimeByHour = parseInt(match[1])
 	const challengeDays = parseInt(match[2])
 	try {

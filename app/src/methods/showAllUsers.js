@@ -5,6 +5,7 @@ import {
 	getTimeByHours,
 	getTodayTime,
 	isAdmin,
+	isLegalChat,
 	sendErrorMessage,
 	sendTeleMessage
 } from "../util";
@@ -15,6 +16,7 @@ export const showAllUsers = async (msg) => {
 		userId,
 		messageId
 	} = getMessageInfo(msg)
+	if (!isLegalChat(chatId)) return
 	try {
 		const isUserAdmin = await isAdmin(chatId, userId)
 		if (!isUserAdmin) {

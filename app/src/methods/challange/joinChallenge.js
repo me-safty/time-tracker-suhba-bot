@@ -1,9 +1,10 @@
 import { addUserToChallenge } from "../../db/challenge/addUserToChallenge"
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge"
-import { sendTeleMessage, sendErrorMessage, getMessageInfo } from "../../util"
+import { sendTeleMessage, sendErrorMessage, getMessageInfo, isLegalChat } from "../../util"
 
 export const joinChallenge = async (msg) => {
 	const { chatId, userId, name } = getMessageInfo(msg)
+	if (!isLegalChat(chatId)) return
 	try {
 		const activeChallenge = await getActiveChallenge()
 		if (!activeChallenge) {

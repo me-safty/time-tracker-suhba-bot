@@ -1,7 +1,7 @@
 import bot from "../bot";
 import { createUser } from "../db/cerateUser";
 import { getById } from "../db/getById";
-import { sendErrorMessage } from "../util";
+import { isLegalChat, sendErrorMessage } from "../util";
 
 export const register = async (msg) => {
 	const chatId = msg.chat.id;
@@ -9,6 +9,8 @@ export const register = async (msg) => {
 		first_name: name,
 		id,
 	} = msg.from
+
+	if (!isLegalChat(chatId)) return
 	try {
 		const user = await getById(id)
 		if (user) {

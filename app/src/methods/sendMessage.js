@@ -1,6 +1,6 @@
 import bot from "../bot";
 import { notAdminMessage } from "../messages";
-import { getMessageInfo, isAdmin, sendErrorMessage, sendTeleMessage } from "../util";
+import { getMessageInfo, isAdmin, isLegalChat, sendErrorMessage, sendTeleMessage } from "../util";
 
 export const sendMessage = async (msg, match) => {
 	const {
@@ -8,6 +8,7 @@ export const sendMessage = async (msg, match) => {
 		chatId,
 		userId
 	} = getMessageInfo(msg)
+	if (!isLegalChat(chatId)) return
 	const value = match[1]
 
 	const isUserAdmin = await isAdmin(chatId, userId)

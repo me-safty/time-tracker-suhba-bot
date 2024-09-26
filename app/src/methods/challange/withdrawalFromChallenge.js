@@ -1,10 +1,11 @@
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge"
 import { deleteUserFromChallenge } from "../../db/challenge/removeUserFromChallenge"
 import { messages } from "../../messages"
-import { sendTeleMessage, sendErrorMessage, getMessageInfo } from "../../util"
+import { sendTeleMessage, sendErrorMessage, getMessageInfo, isLegalChat } from "../../util"
 
 export const withdrawalFromChallenge = async (msg) => {
 	const { chatId, userId } = getMessageInfo(msg)
+	if (!isLegalChat(chatId)) return
 	try {
 		const activeChallenge = await getActiveChallenge()
 		if (!activeChallenge) {

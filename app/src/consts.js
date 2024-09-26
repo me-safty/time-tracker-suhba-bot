@@ -1,4 +1,5 @@
 import { convertToGMTPlus3, getArabicDayName } from "./util"
+require('dotenv').config()
 
 export const ranks = {
 	0: "مواطن",
@@ -60,7 +61,8 @@ export const hamzaId = 6187883815
 export const todayDateGMT3 = () => convertToGMTPlus3(new Date())
 export const arabicTodayName = () => getArabicDayName(todayDateGMT3().getDay())
 
-export const suhbaChatId = "-1002037087475"
+export const suhbaChatId = process.env.MAIN_CHAT_ID
+export const testingChatId = process.env.TEST_CHAT_ID
 
 export const arabicNumsNames = [
 	"الاول",
