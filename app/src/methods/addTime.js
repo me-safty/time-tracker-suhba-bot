@@ -1,8 +1,6 @@
-import bot from "../bot";
-import { mohamedSaftyId } from "../consts";
 import { getById } from "../db/getById";
 import { client } from "../sanityClient";
-import { formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage } from "../util";
+import { formatDate, getMessageInfo, getRank, getTodayTime, sendErrorMessage, sendTeleMessage } from "../util";
 
 export const addTime = async (msg, match) => {
 	const {
@@ -28,7 +26,9 @@ export const addTime = async (msg, match) => {
 					rankName,
 				} = getRank(allTime)
 				const hasNewRank = user.rankCode !== +rankCode
-
+				const topRecordOnDay = (user?.topRecordOnDay ?? 0) < todayTime
+					? todayTime
+					: user?.topRecordOnDay ?? 0
 				// if (hasNewRank) {
 				// 	await changeCustomTitle(chatId, userId, rankName)
 				// }
@@ -51,23 +51,30 @@ export const addTime = async (msg, match) => {
 					rankCode: +rankCode,
 					lastTimeEntryDate: formatDate(),
 					todayTime,
-					lastTimeEntry: value
+					lastTimeEntry: value,
+					topRecordOnDay
 				})
-				bot.sendMessage(chatId, addTimeMessage, {
-					parse_mode: "HTML"
+				sendTeleMessage({
+					chatId,
+					value: addTimeMessage,
+					isBold: false
 				})
 			}
 			else {
-				bot.sendMessage(chatId, userNotRegisterMessage, {
-					parse_mode: "HTML"
-				});
+				sendTeleMessage({
+					chatId,
+					value: userNotRegisterMessage,
+				})
 			}
 		} catch (error) {
 			console.error('Sanity write error:', error);
 			sendErrorMessage(chatId)
 		}
 	} else {
-		bot.sendMessage(chatId, 'طريقه الاستخدام اكتب #إضافة_جلسة ثم عدد الدقائق');
+		sendTeleMessage({
+			chatId,
+			value: wrongValueMessage,
+		})
 	}
 }
 
@@ -80,3 +87,5 @@ export const userNotRegisterMessage = `.
 .`
 
 const newRankMessage = (rankName) => `مبارك تمت ترقيتك الي (${rankName}) 🎉`
+
+const wrongValueMessage = 'طريقه الاستخدام اكتب #إضافة_جلسة ثم عدد الدقائق'

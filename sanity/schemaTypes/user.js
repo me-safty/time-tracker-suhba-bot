@@ -14,6 +14,11 @@ export default {
       type: 'date',
     },
     {
+      name: 'topRecordOnDay',
+      title: 'topRecordOnDay',
+      type: 'number',
+    },
+    {
       name: 'lastTimeEntry',
       title: 'lastTimeEntry',
       type: 'number',

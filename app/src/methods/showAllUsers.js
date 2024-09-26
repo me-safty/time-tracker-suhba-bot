@@ -27,16 +27,20 @@ export const showAllUsers = async (msg) => {
 
 		const users = await getAllUsers()
 		if (users) {
-			const usersMessage = users.reduce((acc, user, index) => {
-				const todayTime = getTodayTime(user)
-				const message = userMessage({
-					index,
-					name: user.name,
-					allTime: user.allTime,
-					todayTime
-				})
-				return acc + message
-			}, '')
+			const usersMessage = users
+				.slice(0, 35)
+				.filter((user) => user.allTime > 0)
+				.reduce((acc, user, index) => {
+					const todayTime = getTodayTime(user)
+					const message = userMessage({
+						index,
+						name: user.name,
+						allTime: user.allTime,
+						todayTime,
+						topRecordOnDay: user?.topRecordOnDay ?? 0
+					})
+					return acc + message
+				}, '')
 			sendTeleMessage({
 				chatId,
 				value: usersMessage,
@@ -52,10 +56,11 @@ export const showAllUsers = async (msg) => {
 	}
 }
 
-export const userMessage = ({index, name, todayTime, allTime}) => {
+export const userMessage = ({index, name, todayTime, allTime, topRecordOnDay}) => {
 	return `
 
 ${index + 1}- الأخ ${name}
 الانجاز اليوم: ${getTimeByHours(todayTime)}
-الانجاز منذ دخولك المجموعة: ${getTimeByHours(allTime)}`	
+الانجاز الكلي: ${getTimeByHours(allTime)}
+الرقم القياسي: ${getTimeByHours(topRecordOnDay)}`
 }

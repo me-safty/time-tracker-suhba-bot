@@ -25,7 +25,7 @@ export const isSameDay = (date1, date2) =>
 export const getTimeByHours = (timeByMin) => {
   const hours = Math.floor(timeByMin / 60);
   const minutes = timeByMin % 60;
-  return `${hours}h ${minutes}m`;
+  return `${hours}س ${minutes}د`;
 }
 
 export const getHigriDate = (date = new Date()) => {

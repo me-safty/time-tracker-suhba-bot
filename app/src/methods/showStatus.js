@@ -28,6 +28,7 @@ export const showStatus = async (msg) => {
 				todayTime,
 				allTime: user.allTime,
 				rankName: ranks[user.rankCode],
+				topRecordOnDay: user?.topRecordOnDay ?? 0
 			})
 			sendTeleMessage({
 				chatId,
@@ -46,7 +47,7 @@ export const showStatus = async (msg) => {
 	}
 }
 
-const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName }) => {
+const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName, topRecordOnDay }) => {
 	const todayDateGMT3 = convertToGMTPlus3(new Date())
 	const arabicTodayName = getArabicDayName(todayDateGMT3.getDay())
 	const leaderBoardRank = await getMyRankFromLeaderBoard(userId)
@@ -74,7 +75,7 @@ const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName }) 
 
 <strong>عدد التحديات الناجح بها : </strong> ${challengeSuccessNumMessage} 
 
-<strong>الرقم القياسي اليومي: </strong> قريبا...
+<strong>الرقم القياسي اليومي: </strong>${getTimeByHours(topRecordOnDay)}
 
 <strong>إحصائيات الأسبوع : </strong> قريبا... 
 
