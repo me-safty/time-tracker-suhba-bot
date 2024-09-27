@@ -39,14 +39,14 @@ export const sendEndChallengeDay = async (chatId) => {
 		const activeChallengeWhitNewUsers = {
 			...activeChallenge,
 			users: challengeUsers.map((user) => {
-				const challengeDay = usersDays.find((day) => day.id === user.userId)
-				const isSameDay = challengeDay?.date === formatDate(new Date())
+				const userChallengeDay = usersDays.find((day) => day.id === user.userId)
+				const isSameDay = userChallengeDay?.date === formatDate(new Date())
 				const days = [
 					...user.days,
 					{
 						_key: `${formatDate(new Date())}`,
 						todayTime: isSameDay
-							? challengeDay?.todayTime ?? 0
+							? userChallengeDay?.todayTime ?? 0
 							: 0,
 						date: formatDate(new Date()),
 					},
@@ -67,6 +67,8 @@ export const sendEndChallengeDay = async (chatId) => {
 		}
 
 		await client.createOrReplace(activeChallengeWhitNewUsers)
+
+		console.log(JSON.stringify(activeChallengeWhitNewUsers, null, 2))
 
 		sendTeleMessage({
 			chatId,
