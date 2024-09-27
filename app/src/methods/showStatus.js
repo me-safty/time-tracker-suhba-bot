@@ -75,7 +75,7 @@ const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName, to
 
 <strong>الإنجاز منذ دخولك المجموعة: </strong>${getTimeByHours(allTime)}
 
-<strong>الترتيب: </strong> ${userId === hamzaId ? "رأس الهرم" : getChallengeRank(leaderBoardRank)}
+<strong>الترتيب: </strong> ${getChallengeRank(leaderBoardRank)}
 
 <strong>عدد التحديات الناجح بها : </strong> ${challengeSuccessNumMessage} 
 
