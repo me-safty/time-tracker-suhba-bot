@@ -5,7 +5,7 @@ import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, formatDate 
 import { getChallengeDayMessage } from "./getChallengeDayMessage"
 import { getEndChallengeMessage } from "./getEndChallengeMessage"
 import { noActiveChallengeMessage } from "./joinChallenge"
-import { scheduleJob } from "node-schedule"
+import { scheduleJob, RecurrenceRule } from "node-schedule"
 
 export const sendEndChallengeDay = async (chatId) => {
 	try {
@@ -45,9 +45,7 @@ export const sendEndChallengeDay = async (chatId) => {
 					...user.days,
 					{
 						_key: `${formatDate(new Date())}`,
-						todayTime: isSameDay
-							? userChallengeDay?.todayTime ?? 0
-							: 0,
+						todayTime: isSameDay ? userChallengeDay?.todayTime ?? 0 : 0,
 						date: formatDate(new Date()),
 					},
 				]
@@ -92,18 +90,16 @@ export const autoEndChallengeDay = async () => {
 
 	if (!activeChallenge) return
 
-	return scheduleJob(
-		{
-			hour: 23,
-			minute: 59,
-			second: 55,
-			tz: "Europe/Istanbul",
-		},
-		() => {
-			sendEndChallengeDay(suhbaChatId)
-			// sendEndChallengeDay("-1002268002533")
-		}
-	)
+	const rule = new RecurrenceRule()
+	rule.hour = 23
+	rule.minute = 59
+	rule.second = 55
+	rule.tz = "Europe/Istanbul"
+
+	scheduleJob(rule, () => {
+		// sendEndChallengeDay("-1002268002533")
+		sendEndChallengeDay(suhbaChatId)
+	})
 }
 
 export const endChallengeDay = async (msg) => {

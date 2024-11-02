@@ -8,7 +8,7 @@ export const getChallengeDayMessage = (activeChallenge) => {
 		)
 	}
 	const statusMessage = activeChallenge.users
-		.sort((a, b) => b.days.at(-1).todayTime - a.days.at(-1).todayTime)
+		.sort((a, b) => b.days.at(-1)?.todayTime - a.days.at(-1)?.todayTime)
 		.reduce((acc, userDay, i) => {
 			const currentDay = userDay.days?.find((day) => day.date === formatDate(new Date()))
 			const isUserSuccess = currentDay
