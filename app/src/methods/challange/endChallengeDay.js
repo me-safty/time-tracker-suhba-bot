@@ -4,18 +4,12 @@ import { client } from "../../sanityClient"
 import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, formatDate } from "../../util"
 import { getChallengeDayMessage } from "./getChallengeDayMessage"
 import { getEndChallengeMessage } from "./getEndChallengeMessage"
-import { noActiveChallengeMessage } from "./joinChallenge"
 import { scheduleJob, RecurrenceRule } from "node-schedule"
 
 export const sendEndChallengeDay = async (chatId) => {
 	try {
 		const activeChallenge = await getActiveChallenge()
-		if (!activeChallenge) {
-			return sendTeleMessage({
-				chatId,
-				value: noActiveChallengeMessage,
-			})
-		}
+		if (!activeChallenge) return
 
 		const challengeUsers = activeChallenge?.users ?? []
 		const challengeUsersIds = challengeUsers?.map((user) => user.userId)
