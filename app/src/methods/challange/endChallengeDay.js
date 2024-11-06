@@ -10,6 +10,8 @@ export const sendEndChallengeDay = async (chatId) => {
 	try {
 		const activeChallenge = await getActiveChallenge()
 		if (!activeChallenge) return
+		const activeChallengeDateImMS = new Date(activeChallenge.challengeId).getTime()
+		if (new Date().getTime() < activeChallengeDateImMS) return
 
 		const challengeUsers = activeChallenge?.users ?? []
 		const challengeUsersIds = challengeUsers?.map((user) => user.userId)
