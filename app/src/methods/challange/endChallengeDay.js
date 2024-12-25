@@ -62,8 +62,6 @@ export const sendEndChallengeDay = async (chatId) => {
 
 		await client.createOrReplace(activeChallengeWhitNewUsers)
 
-		console.log(JSON.stringify(activeChallengeWhitNewUsers, null, 2))
-
 		sendTeleMessage({
 			chatId,
 			value: getChallengeDayMessage(activeChallengeWhitNewUsers),
