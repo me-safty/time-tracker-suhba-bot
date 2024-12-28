@@ -12,6 +12,7 @@ import { joinChallenge } from "./methods/challange/joinChallenge"
 import { autoEndChallengeDay, endChallengeDay } from "./methods/challange/endChallengeDay"
 import { deleteLastSession } from "./methods/deleteLastSession"
 import { withdrawalFromChallenge } from "./methods/challange/withdrawalFromChallenge"
+import { highScore } from "./methods/highScore"
 require("events").EventEmitter.defaultMaxListeners = 20
 
 require("dotenv").config()
@@ -38,6 +39,7 @@ bot.onText(commands.joinChallenge, (msg) => joinChallenge(msg))
 bot.onText(commands.deleteLastSession, (msg) => deleteLastSession(msg))
 bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg))
 bot.onText(commands.withdrawalFromChallenge, (msg) => withdrawalFromChallenge(msg))
+bot.onText(commands.highScore, (msg) => highScore(msg))
 
 void (async () => {
 	await autoEndChallengeDay()
