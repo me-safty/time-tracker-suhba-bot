@@ -126,7 +126,6 @@ export const sendErrorMessage = (chatId) => {
 }
 
 export const convertToGMTPlus3 = (date, offset) => {
-  offset = 1
   const originalTime = date.getTime();
   const gmtPlus3Offset = (offset ?? 3) * 60 * 60 * 1000;
   const gmtPlus3Date = new Date(originalTime + gmtPlus3Offset);
