@@ -53,7 +53,6 @@ export const commands = {
 	endChallengeDay: /#انهاء_تحدي_اليوم/,
 	deleteLastSession: /#حذف_الجلسة/,
 	withdrawalFromChallenge: /#انسحاب_من_التحدي/,
-	highScore: /#يحيا/
 }
 
 export const mohamedSaftyId = 1273850613

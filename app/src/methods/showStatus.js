@@ -18,7 +18,12 @@ import { getChallengeRank } from "./challange/getChallengeDayMessage"
 import { getNumberOfSuccessChallengesForUser } from "../db/challenge/getNumberOfSuccessChallengesForUser"
 
 export const showStatus = async (msg) => {
-	const { chatId, name, userId } = getMessageInfo(msg)
+	const {
+		chatId,
+		name,
+		userId,
+		messageId
+	} = getMessageInfo(msg)
 
 	if (!isLegalChat(chatId)) return
 
@@ -38,11 +43,13 @@ export const showStatus = async (msg) => {
 				chatId,
 				value: statusMessage,
 				isBold: false,
+				messageId
 			})
 		} else {
 			sendTeleMessage({
 				chatId,
 				value: userNotRegisterMessage,
+				messageId
 			})
 		}
 	} catch (error) {

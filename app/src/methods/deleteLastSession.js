@@ -6,7 +6,8 @@ import { convertToGMTPlus3, getMessageInfo, isLegalChat, isSameDay, sendErrorMes
 export const deleteLastSession = async (msg) => {
 	const {
 		chatId,
-		userId
+		userId,
+		messageId
 	} = getMessageInfo(msg)
 
 	if (!isLegalChat(chatId)) return
@@ -43,20 +44,23 @@ export const deleteLastSession = async (msg) => {
 				}
 				sendTeleMessage({
 					chatId,
-					value: messages.deleteSessionSuccess
+					value: messages.deleteSessionSuccess,
+					messageId
 				})
 			}
 			else {
 				sendTeleMessage({
 					chatId,
-					value: messages.noLastSession
+					value: messages.noLastSession,
+					messageId
 				})
 			}
 		}
 		else {
 			sendTeleMessage({
 				chatId,
-				value: messages.userNotRegisterMessage
+				value: messages.userNotRegisterMessage,
+				messageId
 			})
 		}
 	} catch (error) {
