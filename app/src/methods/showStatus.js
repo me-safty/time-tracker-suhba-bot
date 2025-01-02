@@ -42,8 +42,7 @@ export const showStatus = async (msg) => {
 			sendTeleMessage({
 				chatId,
 				value: statusMessage,
-				isBold: false,
-				messageId
+				isBold: false
 			})
 		} else {
 			sendTeleMessage({
