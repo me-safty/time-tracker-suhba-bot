@@ -10,7 +10,7 @@ export const deleteSessionSuccess = `.
 
 export const noLastSession = `.
 
-نم حذف اخر جلسة بالفعل (:
+تم حذف اخر جلسة بالفعل (:
 
 .`
 
