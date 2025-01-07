@@ -6,7 +6,7 @@ export const joinChallenge = async (msg) => {
 	const { chatId, userId, name } = getMessageInfo(msg)
 	if (!isLegalChat(chatId)) return
 	try {
-		const activeChallenge = await getActiveChallenge()
+		const activeChallenge = await getActiveChallenge(false)
 		if (!activeChallenge) {
 			return sendTeleMessage({
 				chatId,

@@ -7,7 +7,7 @@ export const withdrawalFromChallenge = async (msg) => {
 	const { chatId, userId } = getMessageInfo(msg)
 	if (!isLegalChat(chatId)) return
 	try {
-		const activeChallenge = await getActiveChallenge()
+		const activeChallenge = await getActiveChallenge(false)
 		if (!activeChallenge) {
 			return sendTeleMessage({
 				chatId,
