@@ -117,6 +117,8 @@ const getChallengeProgressMessage = async (userId, todayTime) => {
 				challengeMessage = `لقد اكملت تحدي اليوم بنجاح 🫡`
 			}
 		}
+		return "\n" + challengeMessage + "\n"
+	} else {
+		return ""
 	}
-	return "\n" + challengeMessage + "\n"
 }
