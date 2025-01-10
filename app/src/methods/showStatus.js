@@ -60,30 +60,37 @@ export const showStatus = async (msg) => {
 const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName, topRecordOnDay }) => {
 	const todayDateGMT3 = convertToGMTPlus3(new Date())
 	const arabicTodayName = getArabicDayName(todayDateGMT3.getDay())
-	const leaderBoardRank = await getMyRankFromLeaderBoard(userId)
+	const {
+		userRank: leaderBoardRank,
+		minsToNextRank
+	} = await getMyRankFromLeaderBoard(userId)
+	const timeToNextRankMessage = minsToNextRank
+		? ` | يتبقى ${getTimeByHours(minsToNextRank)} للترتيب التالي`
+		: ""
 	const challengeSuccessNum = await getNumberOfSuccessChallengesForUser(userId)
 	let challengeSuccessNumMessage = ""
 	if (challengeSuccessNum === 0) {
 		challengeSuccessNumMessage = ` (: لا تزال في بداية الطريق`
-	} else if (challengeSuccessNum <= 5) {
-		for (let i = 0; i < challengeSuccessNum; i++) {
-			challengeSuccessNumMessage += "🏆 "
-		}
-	} else {
-		challengeSuccessNumMessage = `${challengeSuccessNum} 🏆`
+	}
+	// else if (challengeSuccessNum <= 5) {
+	// 	for (let i = 0; i < challengeSuccessNum; i++) {
+	// 		challengeSuccessNumMessage += "🏆 "
+	// 	}
+	else {
+		challengeSuccessNumMessage = `🏆 ${challengeSuccessNum}x`
 	}
 
 	return `<b>الإحصائيات حول الأخ </b>${name}
-<b>${formatDate()} : ${arabicTodayName}</b>
-<b>${getHigriDate()} : ${arabicTodayName}</b>
+<b>📆 ${formatDate()} : ${arabicTodayName}</b>
+<b>🗓️ ${getHigriDate()} : ${arabicTodayName}</b>
 
 <b>الانجاز اليوم:</b> ${getTimeByHours(todayTime)}
 
 <strong>الإنجاز منذ دخولك المجموعة: </strong>${getTimeByHours(allTime)}
 
-<strong>الترتيب: </strong> ${getChallengeRank(leaderBoardRank)}
+<strong>الترتيب: </strong> ${getChallengeRank(leaderBoardRank)}${timeToNextRankMessage}
 
-<strong>عدد التحديات الناجح بها : </strong> ${challengeSuccessNumMessage} 
+<strong>التحديات المكتملة : </strong> ${challengeSuccessNumMessage} 
 
 <strong>الرقم القياسي اليومي: </strong>${getTimeByHours(topRecordOnDay)}
 
