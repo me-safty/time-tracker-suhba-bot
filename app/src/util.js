@@ -1,5 +1,5 @@
 import moment from "moment-hijri"
-import { arabicDays, ranks, suhbaChatId, testingChatId } from "./consts";
+import { arabicDays, hamzaId, ranks, suhbaChatId, testingChatId } from "./consts";
 import { errorMessage } from "./messages";
 import bot from "./bot";
 
@@ -143,29 +143,28 @@ export const getTodayTime = (user, newValue = 0) => {
 
 export const isLegalChat = (chatId) => chatId == suhbaChatId || chatId == testingChatId
 
-// export const changeCustomTitle = async (chatId, userId, rankName) => {
-//   if (userId !== hamzaId && userId !== mohamedSaftyId) {
-//     // const isUserAdmin = await isAdmin(chatId, userId)
-//     // if (!isUserAdmin) {
-//       // }
-//       try {
-//         await bot.promoteChatMember(chatId, userId, {
-//           can_promote_members: false,
-//           can_change_info: false,
-//           can_post_messages: false,
-//           can_edit_messages: false,
-//           can_delete_messages: false,
-//           can_invite_users: false,
-//           can_restrict_members: false,
-//           can_pin_messages: false,
-//           can_manage_voice_chats: false,
-//           is_anonymous: false
-//         })
-//         // await bot.setChatAdministratorCustomTitle(chatId, userId, rankName);
-//       console.log("================================")
-//     }
-//     catch (error) {
-//       console.log(error)
-//     }
-//   }
-// }
+export const changeCustomTitle = async (chatId, userId, rankName) => {
+  if (userId !== hamzaId) {
+      try {
+        await bot.promoteChatMember(chatId, userId, {
+          can_manage_chat: false,
+          can_change_info: false,
+          can_delete_messages: false,
+          can_invite_users: false,
+          can_restrict_members: false,
+          can_manage_topics: false,
+          can_promote_members: false,
+          can_manage_video_chats: false,
+          can_post_stories: false,
+          can_delete_stories: false,
+          can_manage_voice_chats: false,
+          can_edit_stories: false,
+          can_pin_messages: true,
+        })
+        await bot.setChatAdministratorCustomTitle(chatId, userId, rankName)
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+}

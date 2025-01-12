@@ -1,7 +1,7 @@
 import { getActiveChallenge } from "../db/challenge/getActiveChallenge";
 import { getById } from "../db/getById";
 import { client } from "../sanityClient";
-import { formatDate, getMessageInfo, getRank, getTodayTime, isLegalChat, sendErrorMessage, sendTeleMessage } from "../util";
+import { changeCustomTitle, formatDate, getMessageInfo, getRank, getTodayTime, isLegalChat, sendErrorMessage, sendTeleMessage } from "../util";
 
 export const addTime = async (msg, match) => {
 	const {
@@ -33,9 +33,9 @@ export const addTime = async (msg, match) => {
 				const topRecordOnDay = (user?.topRecordOnDay ?? 0) < todayTime
 					? todayTime
 					: user?.topRecordOnDay ?? 0
-				// if (hasNewRank) {
-				// 	await changeCustomTitle(chatId, userId, rankName)
-				// }
+				if (hasNewRank) {
+					await changeCustomTitle(chatId, userId, rankName)
+				}
 
 				const challengeProgressMessage = await getChallengeProgressMessage(userId, todayTime)
 
