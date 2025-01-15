@@ -2,6 +2,7 @@ import { convertToGMTPlus3, getArabicDayName } from "./util"
 require('dotenv').config()
 
 export const ranks = {
+	0: "مواطن",
   50: "جندي أول",
   100: "عريف",
   150: "رقيب",
