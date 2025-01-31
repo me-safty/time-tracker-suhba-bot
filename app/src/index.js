@@ -37,7 +37,7 @@ bot.onText(commands.startChallenge, (msg, match) => startChallenge(msg, match))
 bot.onText(commands.joinChallenge, (msg) => joinChallenge(msg))
 bot.onText(commands.deleteLastSession, (msg) => deleteLastSession(msg))
 bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg))
-bot.onText(commands.withdrawalFromChallenge, (msg) => withdrawalFromChallenge(msg))
+// bot.onText(commands.withdrawalFromChallenge, (msg) => withdrawalFromChallenge(msg))
 
 void (async () => {
 	await autoEndChallengeDay()
