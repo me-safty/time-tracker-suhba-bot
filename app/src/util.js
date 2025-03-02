@@ -156,10 +156,10 @@ export const changeCustomTitle = async (chatId, userId, rankName) => {
           can_promote_members: false,
           can_manage_video_chats: false,
           can_post_stories: false,
-          can_delete_stories: false,
+          can_delete_stories: true,
           can_manage_voice_chats: false,
           can_edit_stories: false,
-          can_pin_messages: true,
+          can_pin_messages: false,
         })
         await bot.setChatAdministratorCustomTitle(chatId, userId, rankName)
     }
