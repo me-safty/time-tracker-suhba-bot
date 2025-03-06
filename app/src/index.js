@@ -4,14 +4,16 @@ import { addTime } from "./methods/addTime"
 import { register } from "./methods/register"
 import { showStatus } from "./methods/showStatus"
 import { showCommands } from "./methods/showCommands"
-import { commands } from "./consts"
+import { commands, suhbaChatId } from "./consts"
 import { showAllUsers } from "./methods/showAllUsers"
 import { sendMessage } from "./methods/sendMessage"
 import { startChallenge } from "./methods/challange/startChallenge"
 import { joinChallenge } from "./methods/challange/joinChallenge"
 import { autoEndChallengeDay, endChallengeDay } from "./methods/challange/endChallengeDay"
 import { deleteLastSession } from "./methods/deleteLastSession"
-import { withdrawalFromChallenge } from "./methods/challange/withdrawalFromChallenge"
+import { RecurrenceRule, scheduleJob } from "node-schedule"
+import { sendTeleMessage } from "./util"
+import { notAdminMessage } from "./messages"
 require("events").EventEmitter.defaultMaxListeners = 20
 
 require("dotenv").config()
@@ -41,6 +43,18 @@ bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg))
 
 void (async () => {
 	await autoEndChallengeDay()
+		const rule = new RecurrenceRule()
+		rule.hour = 18
+		rule.minute = 20
+		rule.second = 0
+		rule.tz = "Europe/Istanbul"
+	
+		scheduleJob(rule, () => {
+			sendTeleMessage({
+				chatId: suhbaChatId,
+				value: notAdminMessage
+			})
+		})
 })()
 
 module.exports = app

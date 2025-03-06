@@ -1,5 +1,5 @@
 import moment from "moment-hijri"
-import { arabicDays, hamzaId, ranks, suhbaChatId, testingChatId } from "./consts";
+import { arabicDays, hamzaId, mohamedSaftyId, ranks, suhbaChatId, testingChatId } from "./consts";
 import { errorMessage } from "./messages";
 import bot from "./bot";
 
@@ -144,7 +144,7 @@ export const getTodayTime = (user, newValue = 0) => {
 export const isLegalChat = (chatId) => chatId == suhbaChatId || chatId == testingChatId
 
 export const changeCustomTitle = async (chatId, userId, rankName) => {
-  if (userId !== hamzaId) {
+  if (userId !== hamzaId && userId !== mohamedSaftyId) {
       try {
         await bot.promoteChatMember(chatId, userId, {
           can_manage_chat: false,

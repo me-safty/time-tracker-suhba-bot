@@ -1,5 +1,6 @@
 import { suhbaChatId } from "../../consts"
 import { getActiveChallenge } from "../../db/challenge/getActiveChallenge"
+import { notAdminMessage } from "../../messages"
 import { client } from "../../sanityClient"
 import { sendTeleMessage, sendErrorMessage, getMessageInfo, isAdmin, formatDate } from "../../util"
 import { getChallengeDayMessage } from "./getChallengeDayMessage"
