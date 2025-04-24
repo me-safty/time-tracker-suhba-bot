@@ -43,6 +43,7 @@ export const botCommands = {
 	leaveChallenge: "#انسحاب_من_التحدي",
 	endChallenge: "#انتهاء_التحدي",
 	deleteLastSession: "#حذف_الجلسة",
+	successChallengeRanks: "#ترتيب_التحديات",
 }
 
 export const commands = {
@@ -59,6 +60,7 @@ export const commands = {
 	endChallengeDay: /#انهاء_تحدي_اليوم/,
 	deleteLastSession: /#حذف_الجلسة/,
 	withdrawalFromChallenge: /#انسحاب_من_التحدي/,
+	successChallengeRanks: /#ترتيب_التحديات/,
 }
 
 export const mohamedSaftyId = 1273850613

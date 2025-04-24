@@ -4,16 +4,14 @@ import { addTime } from "./methods/addTime"
 import { register } from "./methods/register"
 import { showStatus } from "./methods/showStatus"
 import { showCommands } from "./methods/showCommands"
-import { commands, suhbaChatId } from "./consts"
+import { commands } from "./consts"
 import { showAllUsers } from "./methods/showAllUsers"
 import { sendMessage } from "./methods/sendMessage"
 import { startChallenge } from "./methods/challange/startChallenge"
 import { joinChallenge } from "./methods/challange/joinChallenge"
 import { autoEndChallengeDay, endChallengeDay } from "./methods/challange/endChallengeDay"
 import { deleteLastSession } from "./methods/deleteLastSession"
-import { RecurrenceRule, scheduleJob } from "node-schedule"
-import { sendTeleMessage } from "./util"
-import { notAdminMessage } from "./messages"
+import { showSuccessChallengeRanks } from "./methods/showSuccessChallengeRanks"
 require("events").EventEmitter.defaultMaxListeners = 20
 
 require("dotenv").config()
@@ -39,22 +37,11 @@ bot.onText(commands.startChallenge, (msg, match) => startChallenge(msg, match))
 bot.onText(commands.joinChallenge, (msg) => joinChallenge(msg))
 bot.onText(commands.deleteLastSession, (msg) => deleteLastSession(msg))
 bot.onText(commands.endChallengeDay, (msg) => endChallengeDay(msg))
+bot.onText(commands.successChallengeRanks, (msg) => showSuccessChallengeRanks(msg))
 // bot.onText(commands.withdrawalFromChallenge, (msg) => withdrawalFromChallenge(msg))
 
 void (async () => {
 	await autoEndChallengeDay()
-		const rule = new RecurrenceRule()
-		rule.hour = 18
-		rule.minute = 20
-		rule.second = 0
-		rule.tz = "Europe/Istanbul"
-	
-		scheduleJob(rule, () => {
-			sendTeleMessage({
-				chatId: suhbaChatId,
-				value: notAdminMessage
-			})
-		})
 })()
 
 module.exports = app
