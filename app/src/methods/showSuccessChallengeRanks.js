@@ -1,9 +1,10 @@
 import { getAllUsersSuccessNumbers } from "../db/challenge/getAllUsersSuccessNumbers"
 import { getChallengeRank } from "./challange/getChallengeDayMessage"
-import { sendTeleMessage } from "../util"
+import { isLegalChat, sendTeleMessage } from "../util"
 
 export const showSuccessChallengeRanks = async (msg) => {
   const chatId = msg.chat.id
+  if (!isLegalChat(chatId)) return
   try {
     const users = await getAllUsersSuccessNumbers()
     if (!users || users.length === 0) {
