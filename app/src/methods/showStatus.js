@@ -16,6 +16,7 @@ import {
 import { getMyRankFromLeaderBoard } from "../db/status"
 import { getChallengeRank } from "./challange/getChallengeDayMessage"
 import { getNumberOfSuccessChallengesForUser } from "../db/challenge/getNumberOfSuccessChallengesForUser"
+import { getAllUsersSuccessNumbers } from "../db/challenge/getAllUsersSuccessNumbers"
 
 export const showStatus = async (msg) => {
 	const {
@@ -68,16 +69,17 @@ const getStatusMessage = async ({ userId, name, todayTime, allTime, rankName, to
 		? ` | يتبقى ${getTimeByHours(minsToNextRank)} للترتيب التالي`
 		: ""
 	const challengeSuccessNum = await getNumberOfSuccessChallengesForUser(userId)
+
+	const allUsersSuccessNumbers = await getAllUsersSuccessNumbers()
+	const sortedBySuccess = allUsersSuccessNumbers.sort((a, b) => b.challengeSuccessNumber - a.challengeSuccessNumber)
+	const userSuccessRank = sortedBySuccess.findIndex(u => u.id === userId) + 1
+
 	let challengeSuccessNumMessage = ""
 	if (challengeSuccessNum === 0) {
 		challengeSuccessNumMessage = ` (: لا تزال في بداية الطريق`
 	}
-	// else if (challengeSuccessNum <= 5) {
-	// 	for (let i = 0; i < challengeSuccessNum; i++) {
-	// 		challengeSuccessNumMessage += "🏆 "
-	// 	}
 	else {
-		challengeSuccessNumMessage = `🏆 ${challengeSuccessNum}x`
+		challengeSuccessNumMessage = `🏆${challengeSuccessNum}x - الترتيب: ${getChallengeRank(userSuccessRank)}`
 	}
 
 	return `<b>الإحصائيات حول الأخ </b>${name}
