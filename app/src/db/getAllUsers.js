@@ -5,7 +5,8 @@ export const getAllUsers = async () => {
 		name,
 		allTime,
 		todayTime,
-		lastTimeEntryDate
+		lastTimeEntryDate,
+		id,
 	}`)
 	return users
 }
